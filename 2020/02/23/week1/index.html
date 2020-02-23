@@ -116,8 +116,8 @@
 
 <p>This is the very first blog I write, excluding those paper summaries. The first week of 2020Spring semester marks the dawn of directed, purposed scientific research, yet posing worrying and agitating challenges. Also, a mixture of ‘watery’ and hard, core curriculums calls for careful balancing.</p>
 <h1 id="Research"><a href="#Research" class="headerlink" title="Research"></a>Research</h1><p>The Director pointed out some counter-factual elements in SAC, one of the SOTA algoritms in model-free control. Then I did some research on it. While the derivation is not totally natural, currently no idea for improvement comes forth. Here are some related topics.</p>
-<h2 id="Variational-Inference"><a href="#Variational-Inference" class="headerlink" title="Variational Inference"></a>Variational Inference</h2><h2 id="Maximum-Entropy-RL"><a href="#Maximum-Entropy-RL" class="headerlink" title="Maximum Entropy RL"></a>Maximum Entropy RL</h2><p>The optimal policy for Maximum-Entropy RL is<br>$$\pi_{\text {MaxEnt }}^{*}=\arg \max <em>{\pi} \sum</em>{t} \mathbb{E}<em>{\left(\mathbf{s}</em>{t}, \mathbf{a}<em>{t}\right) \sim \rho</em>{\pi}}\left[r\left(\mathbf{s}<em>{t}, \mathbf{a}</em>{t}\right)+\alpha \mathcal{H}\left(\pi\left(\cdot | \mathbf{s}_{t}\right)\right)\right]$$</p>
-</article>
+<h2 id="Variational-Inference"><a href="#Variational-Inference" class="headerlink" title="Variational Inference"></a>Variational Inference</h2><h2 id="Maximum-Entropy-RL"><a href="#Maximum-Entropy-RL" class="headerlink" title="Maximum Entropy RL"></a>Maximum Entropy RL</h2><p>The optimal policy for Maximum-Entropy RL is </p>
+<script type="math/tex; mode=display">\pi_{\text {MaxEnt }}^{*}=\arg \max _{\pi} \sum_{t} \mathbb{E}_{\left(\mathbf{s}_{t}, \mathbf{a}_{t}\right) \sim \rho_{\pi}}\left[r\left(\mathbf{s}_{t}, \mathbf{a}_{t}\right)+\alpha \mathcal{H}\left(\pi\left(\cdot | \mathbf{s}_{t}\right)\right)\right]</script></article>
                         </main>
                         
                         
@@ -309,24 +309,7 @@ $(document).ready(function() {
     }
     gtag('js', new Date());
     gtag('config', 'UA-11111111-1');
-</script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
-<script type="text/x-mathjax-config">
-  MathJax.Hub.Config("");
-</script>
-
-<script type="text/x-mathjax-config">
-  MathJax.Hub.Queue(function() {
-    var all = MathJax.Hub.getAllJax(), i;
-    for(i=0; i < all.length; i += 1) {
-      all[i].SourceElement().parentNode.className += ' has-jax';
-    }
-  });
-</script>
-
-<script type="text/javascript" src="custom_mathjax_source">
-</script>
-<!-- End: Injected MathJax -->
-<!-- hexo-inject:end -->
+</script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 
 
     
