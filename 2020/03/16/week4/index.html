@@ -87,7 +87,7 @@
 <meta property="og:description" content="Essay for Week4: Literature Review   Equivalence Between PG and SQLIt is shown that there is a precise equivalence between Q-learning and policy gradient methods in the setting of entropy-regularized">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2020-03-16T01:04:08.000Z">
-<meta property="article:modified_time" content="2020-04-02T08:41:54.447Z">
+<meta property="article:modified_time" content="2020-04-02T12:47:09.396Z">
 <meta property="article:author" content="Zhenghai Xue">
 <meta property="article:tag" content="Weekly Essays">
 <meta name="twitter:card" content="summary">
@@ -307,6 +307,10 @@
 <h2 id="Prediction-Tasks-Learning-the-Critic"><a href="#Prediction-Tasks-Learning-the-Critic" class="headerlink" title="Prediction Tasks: Learning the Critic"></a>Prediction Tasks: Learning the Critic</h2><p>In off-policy linear TD, the update $∆_t$ is weighted by $ρ_t$. <strong>Gradient TD methods</strong> compute the gradient of the projected Bellman error directly. <strong>Emphatic TD</strong> was proposed since GTD are usually  <em>two-time-scale</em>, involving two sets of parameters and two learning rates, which makes it hard to use in practice.</p>
 <p><strong>ETD</strong> introduces an <em>interest function</em> $i: \mathcal{S} \rightarrow[0, \infty)$ and $M<em>t=i(S_t)+\gamma_t\rho</em>{t-1}M<em>{t-1}$, which is  accumulated interests. The update $\Delta</em>{t}$ is weighted by $\rho<em>{t} M</em>{t} .$ In practice, we usually set $i\equiv1$.</p>
 <p><strong>Consistent Off-Policy TD</strong> weight $\Delta<em>t$ via $\rho_t\bar{c}(S_t)$, where $\bar{c}(s) \doteq \frac{d</em>{\pi}(s)}{d_{\mu}(s)}$ is the density ratio. To learn $\bar{c}$ via stochastic approximation, the <em>COP operator</em> was proposed. Even further, $\hat{\gamma}$-discounted COP operator was proposed.</p>
+<p>The following are detailed introductions of some articles.</p>
+<font size=4>**Emphatic TD Learning**</font>
+
+<p>TD learning: make online adaptations to the prediction based on one(or several) steps, rather than the whole trajectory.</p>
 <h2 id="Control-Tasks-Learning-the-Actor"><a href="#Control-Tasks-Learning-the-Actor" class="headerlink" title="Control Tasks: Learning the Actor"></a>Control Tasks: Learning the Actor</h2><p>The off-policy <strong>excursion objective</strong> is defined as</p>
 <script type="math/tex; mode=display">
     J_{\mu} \doteq \sum_{s} d_{\mu}(s) i(s) v_{\pi}(s)</script><p><strong>Off-Policy Policy Gradient</strong> methods write the gradient of $J_\mu$ as </p>
