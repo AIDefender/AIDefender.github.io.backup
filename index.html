@@ -310,6 +310,7 @@
 J_{\pi} \doteq \sum_{s} d_{\pi}(s) i(s) v_{\pi}(s)</script><p>while the <strong>excursion objective</strong> corresponds to the performance of the target policy in expectation w.r.t. the stationary (state) distribution of the <em>behavior policy</em></p>
 <script type="math/tex; mode=display">
 J_{\mu} \doteq \sum_{s} d_{\mu}(s) i(s) v_{\pi}(s)</script><p>They pointed out that the excursion objective can be misleading, which makes sense.</p>
+<p>&lt; !—more—&gt;</p>
 <p>In fact, it is infeasible to optimize the alternative life objective directly in the off-policy continuing setting, so they proposed a new objective, the <em>counterfactual objective</em> to approximate it. In the<br>counterfactual objective, we use a new parameter $\hat{γ}$ to control how counterfactual the objective is. $\hat{\gamma}=0$ brings the complete excursion objective and $\hat{\gamma}=1$ corresponds to the complete alternative life objective.</p>
 
           
@@ -434,6 +435,7 @@ J_{\mu} \doteq \sum_{s} d_{\mu}(s) i(s) v_{\pi}(s)</script><p>They pointed out t
 
 <h1 id="Equivalence-Between-PG-and-SQL"><a href="#Equivalence-Between-PG-and-SQL" class="headerlink" title="Equivalence Between PG and SQL"></a>Equivalence Between PG and SQL</h1><p>It is shown that there is a precise equivalence between Q-learning and policy gradient methods in the setting of entropy-regularized reinforcement learning. To be accurate, the gradient of the loss function used in n-step Q-learning is equal to the gradient of the loss used in an n-step policy gradient method, including a squared-error term on the value function.</p>
 <h1 id="Off-policy-Actor-Critic-Methods"><a href="#Off-policy-Actor-Critic-Methods" class="headerlink" title="Off-policy Actor-Critic Methods"></a>Off-policy Actor-Critic Methods</h1><p>The notations are slightly different from traditional RL literature. For example, $v_\pi$ for value functions and $\mathbf{P}_\pi[s,s’]$ as transition matrix. In convention, the target policy is $\pi$ and behavior policy is $\mu$.</p>
+<p>&lt; !—more—&gt;</p>
 <h2 id="Prediction-Tasks-Learning-the-Critic"><a href="#Prediction-Tasks-Learning-the-Critic" class="headerlink" title="Prediction Tasks: Learning the Critic"></a>Prediction Tasks: Learning the Critic</h2><p>The on-policy <strong>Goal</strong> is to learn $V$ such that </p>
 <script type="math/tex; mode=display">
 \sum_{s} d_\pi(s) \mathbb{E}_{\pi}\left[\delta\left(S, A, S^{\prime}\right) | S=s\right]=0</script><p>where $\delta\left(S, A, S^{\prime}\right)=R\left(S, A, S^{\prime}\right)+\gamma V\left(S^{\prime}\right)-V(S)$. </p>
