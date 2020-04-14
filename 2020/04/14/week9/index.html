@@ -87,7 +87,7 @@
 <meta property="og:description" content="Literature review for several papers in the domain of off-policy actor-critic. Off-policy methods mainly focus on how to deal with the difference between behavior distribution and target distribution.">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2020-04-14T13:18:04.000Z">
-<meta property="article:modified_time" content="2020-04-14T14:50:21.696Z">
+<meta property="article:modified_time" content="2020-04-14T14:51:12.977Z">
 <meta property="article:author" content="Zhenghai Xue">
 <meta property="article:tag" content="Weekly Essays">
 <meta name="twitter:card" content="summary">
@@ -312,7 +312,7 @@
 J_{\pi} \doteq \sum_{s} d_{\pi}(s) i(s) v_{\pi}(s)</script><p>while the <strong>excursion objective</strong> corresponds to the performance of the target policy in expectation w.r.t. the stationary (state) distribution of the <em>behavior policy</em></p>
 <script type="math/tex; mode=display">
 J_{\mu} \doteq \sum_{s} d_{\mu}(s) i(s) v_{\pi}(s)</script><p>They pointed out that the excursion objective can be misleading, which makes sense.</p>
-<p>In fact, it is infeasible to optimize the alternative life objective directly in the off-policy continuing setting, so they proposed a new objective, the <em>counterfactual objective</em> to approximate it. In the<br>counterfactual objective, we use a new parameter $\hat{γ}$ to control how counterfactual the objective is. $\hat{\gamma}=0$ brings the complete excursion objective and $\hat{\gamma}=1$ corresponds to the complete alternative life objective.</p>
+<p>In fact, it is infeasible to optimize the alternative life objective directly in the off-policy continuing setting, so they proposed a new objective, the <em>counterfactual objective</em> to approximate it. In the counterfactual objective, we use a new parameter $\hat{γ}$ to control how counterfactual the objective is. $\hat{\gamma}=0$ brings the complete excursion objective and $\hat{\gamma}=1$ corresponds to the complete alternative life objective.</p>
 
       
     </div>
