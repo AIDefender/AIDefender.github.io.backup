@@ -445,42 +445,34 @@
 </ul>
 <p><font size=4><strong>Details of Off-policy TD</strong></font>&emsp; The <strong>excursion objective</strong> is </p>
 <script type="math/tex; mode=display">
-\sum_{s} d_\mu(s) \mathbb{E}_{\pi}\left[\delta\left(S, A, S^{\prime}\right) | S=s\right]=0
-$$ Basic assumption in off-TD is that $\mu(a|s)>0$ for every $s,a$ for which $\pi(a|s)>0$, since it would be *impossible* to estimate the values under $\pi$ if the actions that $\pi$ would take **were never taken by $\mu$** and their consequences were never observed. This is called *the assumption of coverage*. 
-
-The deep reason for the difficulty of off-policy learning is that the behavior policy may take the process to a **distribution of states different** from that which would be encountered under the target policy, yet the states might appear to be the same or similar because of **function approximation**.
-
-<font size=4>**Stability of Emphatic TD(0)**</font>&emsp; For comparison, naive off-policy TD update with importance sampling weight $\rho_t$ can be written as</script><p>\boldsymbol{\theta}_{t+1}\doteq\boldsymbol{\theta}_{t}+\rho_{t} \alpha\left(R_{t+1}+\gamma \boldsymbol{\theta}_{t}^{\top} \boldsymbol{\phi}_{t+1}-\boldsymbol{\theta}_{t}^{\top} \boldsymbol{\phi}_{t}\right) \boldsymbol{\phi}_{t}</p>
+\sum_{s} d_\mu(s) \mathbb{E}_{\pi}\left[\delta\left(S, A, S^{\prime}\right) | S=s\right]=0</script><p>Basic assumption in off-TD is that $\mu(a|s)&gt;0$ for every $s,a$ for which $\pi(a|s)&gt;0$, since it would be <em>impossible</em> to estimate the values under $\pi$ if the actions that $\pi$ would take <strong>were never taken by $\mu$</strong> and their consequences were never observed. This is called <em>the assumption of coverage</em>. </p>
+<p>The deep reason for the difficulty of off-policy learning is that the behavior policy may take the process to a <strong>distribution of states different</strong> from that which would be encountered under the target policy, yet the states might appear to be the same or similar because of <strong>function approximation</strong>.</p>
+<p><font size=4><strong>Stability of Emphatic TD(0)</strong></font>&emsp; For comparison, naive off-policy TD update with importance sampling weight $\rho_t$ can be written as </p>
 <script type="math/tex; mode=display">
-
-where $\boldsymbol{\phi}_t$ are features of the state $t$. The emphatic algorithm introduces the followon trace $F_t$, with $F_0=1$ and</script><p>F_{t} \doteq \gamma \rho_{t-1} F_{t-1}+1, \quad \forall t&gt;0\qquad(1)</p>
+\boldsymbol{\theta}_{t+1}\doteq\boldsymbol{\theta}_{t}+\rho_{t} \alpha\left(R_{t+1}+\gamma \boldsymbol{\theta}_{t}^{\top} \boldsymbol{\phi}_{t+1}-\boldsymbol{\theta}_{t}^{\top} \boldsymbol{\phi}_{t}\right) \boldsymbol{\phi}_{t}</script><p>where $\boldsymbol{\phi}_t$ are features of the state $t$. The emphatic algorithm introduces the followon trace $F_t$, with $F_0=1$ and </p>
 <script type="math/tex; mode=display">
-Then the update of *emphatic TD(0)* is</script><p>\boldsymbol{\theta}_{t+1} \doteq \boldsymbol{\theta}_{t}+\alpha F_{t} \rho_{t}\left(R_{t+1}+\gamma \boldsymbol{\theta}_{t}^{\top} \boldsymbol{\phi}_{t+1}-\boldsymbol{\theta}_{t}^{\top} \boldsymbol{\phi}_{t}\right) \boldsymbol{\phi}_{t}</p>
+F_{t} \doteq \gamma \rho_{t-1} F_{t-1}+1, \quad \forall t>0\qquad(1)</script><p>Then the update of <em>emphatic TD(0)</em> is </p>
 <script type="math/tex; mode=display">
-In the process of stability reasoning, a diagonal matrix $\mathbf{F}$ is defined with diagonal elements $f(s) \doteq d_{\mu}(s) \lim _{t \rightarrow \infty} \mathbb{E}_{\mu}\left[F_{t} | S_{t}=s\right]$. In general, $\mathbf{f}$ is the expected number of time steps that would be spent in each state during an excursion starting from the behavior distribution $\mathbf{d}μ$, or formally</script><p>\mathbf{f}=\mathbf{d}_{\mu}+\gamma \mathbf{P}_{\pi}^{\top} \mathbf{d}_{\mu}+\left(\gamma \mathbf{P}_{\pi}^{\top}\right)^{2} \mathbf{d}_{\mu}+\cdots</p>
+\boldsymbol{\theta}_{t+1} \doteq \boldsymbol{\theta}_{t}+\alpha F_{t} \rho_{t}\left(R_{t+1}+\gamma \boldsymbol{\theta}_{t}^{\top} \boldsymbol{\phi}_{t+1}-\boldsymbol{\theta}_{t}^{\top} \boldsymbol{\phi}_{t}\right) \boldsymbol{\phi}_{t}</script><p>In the process of stability reasoning, a diagonal matrix $\mathbf{F}$ is defined with diagonal elements $f(s) \doteq d_{\mu}(s) \lim _{t \rightarrow \infty} \mathbb{E}_{\mu}\left[F_{t} | S_{t}=s\right]$. In general, $\mathbf{f}$ is the expected number of time steps that would be spent in each state during an excursion starting from the behavior distribution $\mathbf{d}μ$, or formally </p>
 <script type="math/tex; mode=display">
-We regard $(1)$ as its approximation.
-
-## Control Tasks: Learning the Actor 
-The off-policy **excursion objective** is defined as</script><pre><code>J_{\mu} \doteq \sum_{s} d_{\mu}(s) i(s) v_{\pi}(s)
-</code></pre><script type="math/tex; mode=display">
-**Off-Policy Policy Gradient** methods write the gradient of $J_\mu$ as</script><pre><code>\nabla J_{\mu}=\sum_{s} d_{\mu}(s) i(s) \sum_{a}\left(q_{\pi}(s, a) \nabla \pi(a | s)+\pi(a | s) \nabla q_{\pi}(s, a)\right)
-</code></pre><script type="math/tex; mode=display">
-and ignore the term $\pi(s,a)\nabla q_\pi(s,a)$.
-
-Others proposed an unbiased estimator $Z_t$ of the gradient.</script><pre><code>\begin{array}{l}
-</code></pre><p>F_{t}^{(1)} \doteq i\left(S_{t}\right)+\gamma_{t} \rho_{t-1} F_{t-1}^{(1)}, \quad M_{t}^{(1)} \doteq\left(1-\lambda_{1}\right) i\left(S_{t}\right)+\lambda_{1} F_{t}^{(1)} \\<br>Z_{t}^{(1)} \doteq \rho_{t} M_{t}^{(1)} q_{\pi}\left(S_{t}, A_{t}\right) \nabla \log \pi\left(A_{t} | S_{t}\right)<br>\end{array}</p>
+\mathbf{f}=\mathbf{d}_{\mu}+\gamma \mathbf{P}_{\pi}^{\top} \mathbf{d}_{\mu}+\left(\gamma \mathbf{P}_{\pi}^{\top}\right)^{2} \mathbf{d}_{\mu}+\cdots</script><p>We regard $(1)$ as its approximation.</p>
+<h2 id="Control-Tasks-Learning-the-Actor"><a href="#Control-Tasks-Learning-the-Actor" class="headerlink" title="Control Tasks: Learning the Actor"></a>Control Tasks: Learning the Actor</h2><p>The off-policy <strong>excursion objective</strong> is defined as</p>
 <script type="math/tex; mode=display">
-and the **ACE** algorithm updates $\theta \text { as } \theta_{t+1}=\theta_{t}+\alpha Z_{t}^{(1)}$. The following are detailed introductions of some articles.
-
-<font size=4>**Off-PAC with Emphatic Weights**</font>&emsp; 
-
-This article gives an approach to compute the gradient of $J_\mu(\mathbf{\theta})$.
-**Theorem**(Off-policy Policy Gradient Theorem):
-&emsp;&emsp;</script><pre><code>\frac{\partial J_{\mu}(\boldsymbol{\theta})}{\partial \boldsymbol{\theta}}=\sum_{s} m(s) \sum_{a} \frac{\partial \pi(s, a ; \boldsymbol{\theta})}{\partial \boldsymbol{\theta}} q_{\pi}(s, a)
-</code></pre><script type="math/tex; mode=display">
-where $m:S\to[0,\infty)$ is the emphatic weighting, defined as</script><pre><code>\mathbf{m}^{\top} \stackrel{\text { def }}{=} \mathbf{i}^{\top}\left(\mathbf{I}-\mathbf{P}_{\pi, \gamma}\right)^{-1}
-</code></pre><p>$$<br>where the vector $\mathbf{i} \in \mathbb{R}^{|S|}$ has entries $\mathbf{i}(s) \stackrel{\text { def }}{=} d_{\mu}(s) i(s)$ and $\mathbf{P}_{\pi, \gamma} \in \mathbb{R}^{|s|\times|s|}$ is the matrix with entries $\mathbf{P}_{\pi, \gamma}\left(s, s^{\prime}\right) \stackrel{\text { det }}{=} \sum_{a} \pi(s, a ; \boldsymbol{\theta}) \mathrm{P}\left(s, a, s^{\prime}\right) \gamma\left(s, a, s^{\prime}\right)$.</p>
+    J_{\mu} \doteq \sum_{s} d_{\mu}(s) i(s) v_{\pi}(s)</script><p><strong>Off-Policy Policy Gradient</strong> methods write the gradient of $J_\mu$ as </p>
+<script type="math/tex; mode=display">
+    \nabla J_{\mu}=\sum_{s} d_{\mu}(s) i(s) \sum_{a}\left(q_{\pi}(s, a) \nabla \pi(a | s)+\pi(a | s) \nabla q_{\pi}(s, a)\right)</script><p>and ignore the term $\pi(s,a)\nabla q_\pi(s,a)$.</p>
+<p>Others proposed an unbiased estimator $Z_t$ of the gradient.</p>
+<script type="math/tex; mode=display">
+    \begin{array}{l}
+F_{t}^{(1)} \doteq i\left(S_{t}\right)+\gamma_{t} \rho_{t-1} F_{t-1}^{(1)}, \quad M_{t}^{(1)} \doteq\left(1-\lambda_{1}\right) i\left(S_{t}\right)+\lambda_{1} F_{t}^{(1)} \\
+Z_{t}^{(1)} \doteq \rho_{t} M_{t}^{(1)} q_{\pi}\left(S_{t}, A_{t}\right) \nabla \log \pi\left(A_{t} | S_{t}\right)
+\end{array}</script><p>and the <strong>ACE</strong> algorithm updates $\theta \text { as } \theta_{t+1}=\theta_{t}+\alpha Z_{t}^{(1)}$. The following are detailed introductions of some articles.</p>
+<p><font size=4><strong>Off-PAC with Emphatic Weights</strong></font>&emsp; </p>
+<p>This article gives an approach to compute the gradient of $J_\mu(\mathbf{\theta})$.<br><strong>Theorem</strong>(Off-policy Policy Gradient Theorem):<br>&emsp;&emsp;</p>
+<script type="math/tex; mode=display">
+    \frac{\partial J_{\mu}(\boldsymbol{\theta})}{\partial \boldsymbol{\theta}}=\sum_{s} m(s) \sum_{a} \frac{\partial \pi(s, a ; \boldsymbol{\theta})}{\partial \boldsymbol{\theta}} q_{\pi}(s, a)</script><p>where $m:S\to[0,\infty)$ is the emphatic weighting, defined as</p>
+<script type="math/tex; mode=display">
+    \mathbf{m}^{\top} \stackrel{\text { def }}{=} \mathbf{i}^{\top}\left(\mathbf{I}-\mathbf{P}_{\pi, \gamma}\right)^{-1}</script><p>where the vector $\mathbf{i} \in \mathbb{R}^{|S|}$ has entries $\mathbf{i}(s) \stackrel{\text { def }}{=} d_{\mu}(s) i(s)$ and $\mathbf{P}_{\pi, \gamma} \in \mathbb{R}^{|s|\times|s|}$ is the matrix with entries $\mathbf{P}_{\pi, \gamma}\left(s, s^{\prime}\right) \stackrel{\text { det }}{=} \sum_{a} \pi(s, a ; \boldsymbol{\theta}) \mathrm{P}\left(s, a, s^{\prime}\right) \gamma\left(s, a, s^{\prime}\right)$.</p>
 <p>The proof of the theorem involves a matrix representation and a fixed-point style equation.</p>
 <h1 id="On-and-off-policy-Combination"><a href="#On-and-off-policy-Combination" class="headerlink" title="On- and off-policy Combination"></a>On- and off-policy Combination</h1>
           
