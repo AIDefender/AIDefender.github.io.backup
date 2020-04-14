@@ -305,7 +305,9 @@
            Essay for Week9: Literature Review 
 
 Generalized Off-Policy Actor-Criticcomposed by Shangtong Zhang et. al, 2019
-IntroductionAccording to the paper, 
+IntroductionAccording to the paper, the alternative life objective is the performance of the target policy in expectation w.r.t. the stationary (state) distribution of the target policy
+
+J_{\pi} \doteq \sum_{s} d_{\pi}(s) i(s) v_{\pi}(s)while the excursion objective corresponds to the performance of the target policy in expectation w.r.t. the stationary (state) distribution of the be
           ...
           <!--noindex-->
           <div class="post-button text-center">
@@ -433,7 +435,8 @@ IntroductionAccording to the paper,
           
            Essay for Week4: Literature Review 
 
-Equivalence Between PG and SQLIt is shown that there is a precise equivalence between Q-learning and policy grad
+Equivalence Between PG and SQLIt is shown that there is a precise equivalence between Q-learning and policy gradient methods in the setting of entropy-regularized reinforcement learning. To be accurate, the gradient of the loss function used in n-step Q-learning is equal to the gradient of the loss used in an n-step policy gradient method, including a squared-error term on the value function.
+Off-policy Actor-Critic MethodsThe notations are slightly differen
           ...
           <!--noindex-->
           <div class="post-button text-center">
@@ -559,7 +562,8 @@ Equivalence Between PG and SQLIt is shown that there is a precise equivalence be
       
         
           
-          This is the very first blog I write, excluding those paper summaries. The first week of 2020Spring semester marks the dawn of directed, purposed scien
+          This is the very first blog I write, excluding those paper summaries. The first week of 2020Spring semester marks the dawn of directed, purposed scientific research, yet posing worrying and agitating challenges. Also, a mixture of ‘watery’ and hard, core curriculums calls for careful balancing.
+ResearchThe Director pointed out some counter-factual elements in SAC, one of the SOTA algoritms in model-free control. Then I did some research on it. While the derivation is not totally natural, current
           ...
           <!--noindex-->
           <div class="post-button text-center">
