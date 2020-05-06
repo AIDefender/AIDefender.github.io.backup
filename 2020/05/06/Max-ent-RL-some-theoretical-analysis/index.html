@@ -87,7 +87,7 @@
 <meta property="og:description" content="I focus on two papers, &#96;A Theory of Regularized Markov Decision Processes&#96; by Matthieu et al. and &#96;Leverage the Average an Analysis of Regularization in RL&#39; by Nino et al. They give some theoretical i">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2020-05-06T14:10:02.000Z">
-<meta property="article:modified_time" content="2020-05-06T14:32:42.657Z">
+<meta property="article:modified_time" content="2020-05-06T16:16:05.295Z">
 <meta property="article:author" content="Zhenghai Xue">
 <meta property="article:tag" content="RL Research">
 <meta name="twitter:card" content="summary">
@@ -314,7 +314,25 @@
       
 
       
-        <h1 id="Notations"><a href="#Notations" class="headerlink" title="Notations"></a>Notations</h1>
+        <h1 id="Background"><a href="#Background" class="headerlink" title="Background"></a>Background</h1><h2 id="Unregularized-MDP"><a href="#Unregularized-MDP" class="headerlink" title="Unregularized MDP"></a>Unregularized MDP</h2><p>We write $\Delta_X$ the set of probability distributions over a finite set $X$(In fact a probability simplex) and $Y^X$ the set of applications from $X$ to the set $Y$. The Markovian transition kernel can be represented as $P\in \Delta_\mathcal{S}^{\mathcal{S}\times\mathcal{A}}$, and the reward function $r\in\mathbb{R}^{\mathcal{S}\times\mathcal{A}}$. For any function $v\in\mathbb{R}^\mathcal{S}$, we can define the Bellman operator associated with policy $\pi\in \Delta_{\mathcal{A}}^{\mathcal{S}}$ as </p>
+<script type="math/tex; mode=display">
+\forall s \in \mathcal{S},\left[T_{\pi} v\right](s)=\mathbb{E}_{a \sim \pi(\cdot | s)}\left[r(s, a)+\gamma \mathbb{E}_{s^{\prime} | s, a}\left[v\left(s^{\prime}\right)\right]\right]</script><p>This operator is a $γ$-contraction in supremum norm and its<br>unique fixed-point is the value function $v_π$. With $r_{\pi}(s)=$$\mathbb{E}_{a \sim \pi(\cdot | s)}[r(s, a)]$ and $P_{\pi}\left(s^{\prime} | s\right)=\mathbb{E}_{a \sim \pi(\cdot | s)}\left[P\left(s^{\prime} | s, a\right)\right]$, the operator can be written as $T_{\pi} v=r_{\pi}+\gamma P_{\pi} v$. We further define </p>
+<script type="math/tex; mode=display">
+q(s, a)=r(s, a)+\gamma \mathbb{E}_{s^{\prime} | s, a}\left[v\left(s^{\prime}\right)\right]</script><p>and the Bellman operator can also be written as </p>
+<script type="math/tex; mode=display">
+[T_\pi v](s)= \langle   \pi(\cdot|s), q(s, \cdot)\rangle</script><h2 id="Legendre-Fenchel-transform"><a href="#Legendre-Fenchel-transform" class="headerlink" title="Legendre-Fenchel transform"></a>Legendre-Fenchel transform</h2><p>Let $\Omega: \Delta_{\mathcal{A}} \rightarrow \mathbb{R}$ be a strongly convex function. The Legendre-Fenchel transform (or convex conjugate) of $\Omega$ is $\Omega^{*}: \mathbb{R}^{\mathcal{A}} \rightarrow \mathbb{R},$ defined as</p>
+<script type="math/tex; mode=display">
+\forall q_{s} \in \mathbb{R}^{\mathcal{A}}, \Omega^{*}\left(q_{s}\right)=\max _{\pi_{s} \in \Delta_{\mathcal{A}}}\left\langle\pi_{s}, q_{s}\right\rangle-\Omega\left(\pi_{s}\right)</script><p>$\nabla \Omega^<em>$ is Lipschitz and $\nabla \Omega^{</em>}\left(q_{s}\right)=\operatorname{argmax}_{\pi_{s} \in \Delta_{\mathcal{A}}}\left\langle\pi_{s}, q_{s}\right\rangle-\Omega\left(\pi_{s}\right)$.</p>
+<h1 id="Regularized-MDP"><a href="#Regularized-MDP" class="headerlink" title="Regularized MDP"></a>Regularized MDP</h1><p>Regularized Bellman operator is defined as </p>
+<script type="math/tex; mode=display">
+T_{\pi, \Omega}v=T_{\pi}v-\Omega(\pi)</script><p>It shares the contraction property with unregularized Bellman operator. The regularized value function is simply the unregularized value of $\pi$ for the reward $r_{\pi}-\Omega(\pi),$ that is $v_{\pi, \Omega}=\left(I-\gamma P_{\pi}\right)^{-1}\left(r_{\pi}-\Omega(\pi)\right)$.</p>
+<h1 id="Regularized-Modified-Policy-Iteration"><a href="#Regularized-Modified-Policy-Iteration" class="headerlink" title="Regularized Modified Policy Iteration"></a>Regularized Modified Policy Iteration</h1><p>Having defined the notion of regularized MDPs, we still<br>need algorithms that solve them. Reg-Modified PI is defined as </p>
+<script type="math/tex; mode=display">
+\left\{\begin{array}{l}
+\pi_{k+1}=\mathcal{G}_{\Omega}\left(v_{k}\right) \\
+v_{k+1}=\left(T_{\pi_{k+1}, \Omega}\right)^{m} v_{k}
+\end{array}\right.</script><p>With $m=1$ we get VI: $\pi_{k+1}$ is a greedy step and $v_{k+1}=T_{*, \Omega}v_k$. With $m=\infty$ we obtain PI: $(T_{\pi_k, \Omega})^\infty v_{k-1}=v_{\pi_k, \Omega}$.</p>
+<h2 id="Related-algorithms"><a href="#Related-algorithms" class="headerlink" title="Related algorithms"></a>Related algorithms</h2><h2 id="Analysis"><a href="#Analysis" class="headerlink" title="Analysis"></a>Analysis</h2>
       
     </div>
     
@@ -490,7 +508,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Notations"><span class="nav-number">1.</span> <span class="nav-text">Notations</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Background"><span class="nav-number">1.</span> <span class="nav-text">Background</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Unregularized-MDP"><span class="nav-number">1.1.</span> <span class="nav-text">Unregularized MDP</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Legendre-Fenchel-transform"><span class="nav-number">1.2.</span> <span class="nav-text">Legendre-Fenchel transform</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Regularized-MDP"><span class="nav-number">2.</span> <span class="nav-text">Regularized MDP</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Regularized-Modified-Policy-Iteration"><span class="nav-number">3.</span> <span class="nav-text">Regularized Modified Policy Iteration</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Related-algorithms"><span class="nav-number">3.1.</span> <span class="nav-text">Related algorithms</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Analysis"><span class="nav-number">3.2.</span> <span class="nav-text">Analysis</span></a></li></ol></li></ol></div>
             
 
           </div>
