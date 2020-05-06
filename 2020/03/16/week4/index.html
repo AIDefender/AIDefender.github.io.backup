@@ -87,7 +87,7 @@
 <meta property="og:description" content="Essay for Week4: Literature Review   Equivalence Between PG and SQLIt is shown that there is a precise equivalence between Q-learning and policy gradient methods in the setting of entropy-regularized">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2020-03-16T01:04:08.000Z">
-<meta property="article:modified_time" content="2020-04-29T17:12:23.257Z">
+<meta property="article:modified_time" content="2020-05-02T12:32:19.097Z">
 <meta property="article:author" content="Zhenghai Xue">
 <meta property="article:tag" content="Weekly Essays">
 <meta name="twitter:card" content="summary">
@@ -321,10 +321,11 @@
 <p><strong>ETD</strong> introduces an <em>interest function</em> $i: \mathcal{S} \rightarrow[0, \infty)$ and $M_t=i(S_t)+\gamma_t\rho_{t-1}M_{t-1}$, which is  accumulated interests. The update $\Delta_{t}$ is weighted by $\rho_{t} M_{t} .$ In practice, we usually set $i\equiv1$.</p>
 <p><strong>Consistent Off-Policy TD</strong> weight $\Delta_t$ via $\rho_t\bar{c}(S_t)$, where $\bar{c}(s) \doteq \frac{d_{\pi}(s)}{d_{\mu}(s)}$ is the density ratio. To learn $\bar{c}$ via stochastic approximation, the <em>COP operator</em> was proposed. Even further, $\hat{\gamma}$-discounted COP operator was proposed.</p>
 <p>The following are detailed introductions of some articles.</p>
-<!-- Idea for research: 
-1. 能否整合Q learning和TD learning,用TD learning的一套表示出sql
-2. 我认为这个投影方法是可以和A2C在一个level的，换句话说是在A2C这么高的level上的改进:方法改进了Critic(即Q函数)在actor更新过程中的地位
- -->
+<p>Idea for research: </p>
+<ol>
+<li>能否整合Q learning和TD learning,用TD learning的一套表示出sql</li>
+<li>我认为这个投影方法是可以和A2C在一个level的，换句话说是在A2C这么高的level上的改进:方法改进了Critic(即Q函数)在actor更新过程中的地位</li>
+</ol>
 <p><font size=4><strong>Emphatic TD Learning</strong></font>&emsp; TD learning: make online adaptations to the prediction based on <em>one(or several)</em> steps, rather than <em>the whole trajectory</em>. Using <strong>IS</strong> to reweight the updates of TD in off-policy setting has <strong>very high variance</strong>. Emphatic weighting is <em>similar</em> to IS in that it also varies emphasis so as to reweight the distribution of linear TD($λ$) updates, but to a <em>different</em> <em>goal</em>. The new goal is to create a weighting equivalent to the <strong>followon</strong> distribution for the target policy started in the stationary distribution of the behavior policy.</p>
 <ul>
 <li>stability of on-policy TD(0): many matrix-form annotations; related to positive definite matrix and contraction.</li>

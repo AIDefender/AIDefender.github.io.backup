@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="Weekly Essays," />
+  <meta name="keywords" content="Hexo, NexT" />
 
 
 
@@ -79,17 +79,16 @@
 
 
 
-<meta name="description" content="Literature review for several papers in the domain of off-policy actor-critic. Off-policy methods mainly focus on how to deal with the difference between behavior distribution and target distribution.">
+<meta name="description" content="title: week10date: 2020-04-25 08:35:46tags: Weekly Essaysauthor: Zhenghai Xuemathjax: truedescription: This week I had some discussions with a senior fellow and my director. They pointed out some moti">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Week9">
-<meta property="og:url" content="http://aidefender.github.io/2020/04/14/week9/index.html">
+<meta property="og:title" content="Week10">
+<meta property="og:url" content="http://aidefender.github.io/2020/05/06/week10/index.html">
 <meta property="og:site_name" content="Zhenghai Xue&#39;s HomePage">
-<meta property="og:description" content="Literature review for several papers in the domain of off-policy actor-critic. Off-policy methods mainly focus on how to deal with the difference between behavior distribution and target distribution.">
+<meta property="og:description" content="title: week10date: 2020-04-25 08:35:46tags: Weekly Essaysauthor: Zhenghai Xuemathjax: truedescription: This week I had some discussions with a senior fellow and my director. They pointed out some moti">
 <meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2020-04-14T13:18:04.000Z">
-<meta property="article:modified_time" content="2020-04-29T17:12:23.257Z">
+<meta property="article:published_time" content="2020-05-06T14:12:07.352Z">
+<meta property="article:modified_time" content="2020-05-06T14:12:07.352Z">
 <meta property="article:author" content="Zhenghai Xue">
-<meta property="article:tag" content="Weekly Essays">
 <meta name="twitter:card" content="summary">
 
 
@@ -120,13 +119,13 @@
 
 
 
-  <link rel="canonical" href="http://aidefender.github.io/2020/04/14/week9/"/>
+  <link rel="canonical" href="http://aidefender.github.io/2020/05/06/week10/"/>
 
 
 
 
 
-  <title>Week9 | Zhenghai Xue's HomePage</title>
+  <title>Week10 | Zhenghai Xue's HomePage</title>
   
 
 
@@ -243,7 +242,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://aidefender.github.io/2020/04/14/week9/">
+    <link itemprop="mainEntityOfPage" href="http://aidefender.github.io/2020/05/06/week10/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Zhenghai Xue">
@@ -260,7 +259,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Week9</h1>
+          <h1 class="post-title" itemprop="name headline">Week10</h1>
         
 
         <div class="post-meta">
@@ -272,8 +271,8 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-04-14T21:18:04+08:00">
-                2020-04-14
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-05-06T22:12:07+08:00">
+                2020-05-06
               </time>
             
 
@@ -296,10 +295,6 @@
           
 
           
-              <div class="post-description">
-                  Literature review for several papers in the domain of off-policy actor-critic. Off-policy methods mainly focus on how to deal with the difference between behavior distribution and target distribution.
-              </div>
-          
 
         </div>
       </header>
@@ -314,28 +309,18 @@
       
 
       
-        <center> <font size=6>Essay for Week9: Literature Review</font> </center>
+        <p>title: week10<br>date: 2020-04-25 08:35:46<br>tags: Weekly Essays<br>author: Zhenghai Xue<br>mathjax: true<br>description: This week I had some discussions with a senior fellow and my director. They pointed out some motivations and keys of improvements. Then I read related papers for further research, listed as follows</p>
+<center> <font size=6>Essay for Week10: Literature Review</font> </center>
 
-<h1 id="Generalized-Off-Policy-Actor-Critic"><a href="#Generalized-Off-Policy-Actor-Critic" class="headerlink" title="Generalized Off-Policy Actor-Critic"></a>Generalized Off-Policy Actor-Critic</h1><p>composed by Shangtong Zhang et al., 2019</p>
-<h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><p>According to the paper, the <strong>alternative life objective</strong> is the performance of the target policy in expectation w.r.t. the stationary (state) distribution of the <em>target policy</em></p>
+<h1 id="Stable-Policy-Optimization-via-Off-Policy-Divergence-Regularization"><a href="#Stable-Policy-Optimization-via-Off-Policy-Divergence-Regularization" class="headerlink" title="Stable Policy Optimization via Off-Policy Divergence Regularization"></a>Stable Policy Optimization via Off-Policy Divergence Regularization</h1><h2 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation"></a>Motivation</h2><p>The key motivation in this work is that constraining the <strong>probabilities of the immediate future actions</strong> might not be enough to ensure that the surrogate objective is still a valid estimate of the performance of the next policy.  Instead, we should reason about the long-term effect of the policies <strong>on the distribution of the future states</strong>.</p>
+<p>Let $d_\rho^\pi$ be the discounted state visitation distribution:</p>
 <script type="math/tex; mode=display">
-J_{\pi} \doteq \sum_{s} d_{\pi}(s) i(s) v_{\pi}(s)</script><p>while the <strong>excursion objective</strong> corresponds to the performance of the target policy in expectation w.r.t. the stationary (state) distribution of the <em>behavior policy</em></p>
+d_{\rho}^{\pi}(s) \triangleq(1-\gamma) \sum_{t=0}^{\infty} \gamma^{t} \operatorname{Pr}^{\pi}\left(s_{t}=s | s_{0} \sim \rho\right)</script><p>We have the following bound:</p>
 <script type="math/tex; mode=display">
-J_{\mu} \doteq \sum_{s} d_{\mu}(s) i(s) v_{\pi}(s)</script><p>They pointed out that the excursion objective can be misleading, which makes sense.</p>
-<p>In fact, it is infeasible to optimize the alternative life objective directly in the off-policy continuing setting, so they proposed a new objective, the <em>counterfactual objective</em> to approximate it.</p>
-<script type="math/tex; mode=display">
-J_{\hat{\gamma}} \doteq \sum_{s} d_{\hat{\gamma}}(s) \hat{i}(s) v_{\pi}(s)</script><p>In the counterfactual objective, we use a new parameter $\hat{γ}$ to control how counterfactual the objective is. $\hat{\gamma}=0$ brings the complete excursion objective and $\hat{\gamma}=1$ corresponds to the complete alternative life objective.</p>
-<h2 id="Related-Work"><a href="#Related-Work" class="headerlink" title="Related Work"></a>Related Work</h2><p>To learn the actor(the policy) to maximize the excursion objective, Imani et al.(2018) defined </p>
-<script type="math/tex; mode=display">
-\begin{array}{l}
-F_{t}^{(1)} \doteq i\left(S_{t}\right)+\gamma_{t} \rho_{t-1} F_{t-1}^{(1)}, \quad M_{t}^{(1)} \doteq\left(1-\lambda_{1}\right) i\left(S_{t}\right)+\lambda_{1} F_{t}^{(1)} \\
-Z_{t}^{(1)} \doteq \rho_{t} M_{t}^{(1)} q_{\pi}\left(S_{t}, A_{t}\right) \nabla \log \pi\left(A_{t} | S_{t}\right)
-\end{array}</script><p>and then they proved </p>
-<script type="math/tex; mode=display">
-\lim _{t \rightarrow \infty} \mathbb{E}_{\mu}\left[Z_{t}^{(1)}\right]=\nabla J_{\mu}</script><p>Intuitively, $F_t$ defined the accumulated IS weight, which has an impact on stationary state distribution. So $F_t$ is included in $Z_t$ to fix the state distribution shift.</p>
-<h2 id="The-Gen-OPPG-Theorem"><a href="#The-Gen-OPPG-Theorem" class="headerlink" title="The Gen-OPPG Theorem"></a>The Gen-OPPG Theorem</h2><p>The theorem and the proof are quite puzzling. I may return to them later.</p>
-<h1 id="Consistent-On-Line-Off-Policy-Evaluation"><a href="#Consistent-On-Line-Off-Policy-Evaluation" class="headerlink" title="Consistent On-Line Off-Policy Evaluation"></a>Consistent On-Line Off-Policy Evaluation</h1><p>composed by Assaf Hallak and Shie Manor, 2017.</p>
-<p><strong>Note</strong>: TD($\lambda$) still remains to be read.<br><strong>Note</strong>: check the def of ergodic in Markov Chain.</p>
+\begin{aligned}
+J\left(\pi^{\prime}\right) & \geq L_{\pi}\left(\pi^{\prime}\right)-\epsilon^{\pi} D_{\mathrm{TV}}\left(d_{\rho}^{\pi^{\prime}} \| d_{\rho}^{\pi}\right) \\
+& \geq L_{\pi}^{\mathrm{clip}}\left(\pi^{\prime}\right)-\epsilon^{\pi} D_{\mathrm{TV}}\left(d_{\rho}^{\pi^{\prime}} \| d_{\rho}^{\pi}\right)
+\end{aligned}</script><h2 id="Approximation-of-visitation-divergences"><a href="#Approximation-of-visitation-divergences" class="headerlink" title="Approximation of visitation divergences"></a>Approximation of visitation divergences</h2><p><strong>Note</strong>: see the conjugate gradient of TRPO</p>
 
       
     </div>
@@ -351,12 +336,6 @@ Z_{t}^{(1)} \doteq \rho_{t} M_{t}^{(1)} q_{\pi}\left(S_{t}, A_{t}\right) \nabla 
 
     <footer class="post-footer">
       
-        <div class="post-tags">
-          
-            <a href="/tags/Weekly-Essays/" rel="tag"># Weekly Essays</a>
-          
-        </div>
-      
 
       
       
@@ -366,8 +345,8 @@ Z_{t}^{(1)} \doteq \rho_{t} M_{t}^{(1)} q_{\pi}\left(S_{t}, A_{t}\right) \nabla 
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2020/03/16/week4/" rel="next" title="Week4">
-                <i class="fa fa-chevron-left"></i> Week4
+              <a href="/2020/04/30/week11/" rel="next" title="Week11">
+                <i class="fa fa-chevron-left"></i> Week11
               </a>
             
           </div>
@@ -375,10 +354,6 @@ Z_{t}^{(1)} \doteq \rho_{t} M_{t}^{(1)} q_{\pi}\left(S_{t}, A_{t}\right) \nabla 
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2020/04/30/week11/" rel="prev" title="Week11">
-                Week11 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -516,7 +491,7 @@ Z_{t}^{(1)} \doteq \rho_{t} M_{t}^{(1)} q_{\pi}\left(S_{t}, A_{t}\right) \nabla 
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Generalized-Off-Policy-Actor-Critic"><span class="nav-number">1.</span> <span class="nav-text">Generalized Off-Policy Actor-Critic</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Introduction"><span class="nav-number">1.1.</span> <span class="nav-text">Introduction</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Related-Work"><span class="nav-number">1.2.</span> <span class="nav-text">Related Work</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#The-Gen-OPPG-Theorem"><span class="nav-number">1.3.</span> <span class="nav-text">The Gen-OPPG Theorem</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Consistent-On-Line-Off-Policy-Evaluation"><span class="nav-number">2.</span> <span class="nav-text">Consistent On-Line Off-Policy Evaluation</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Stable-Policy-Optimization-via-Off-Policy-Divergence-Regularization"><span class="nav-number">1.</span> <span class="nav-text">Stable Policy Optimization via Off-Policy Divergence Regularization</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Motivation"><span class="nav-number">1.1.</span> <span class="nav-text">Motivation</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Approximation-of-visitation-divergences"><span class="nav-number">1.2.</span> <span class="nav-text">Approximation of visitation divergences</span></a></li></ol></li></ol></div>
             
 
           </div>
