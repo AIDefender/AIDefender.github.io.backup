@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="RL Research," />
 
 
 
@@ -79,16 +79,17 @@
 
 
 
-<meta name="description" content="2nd Year Undergraduate at School of Artificial Intelligence, Nanjing University">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Misc">
-<meta property="og:url" content="http://aidefender.github.io/Misc/index.html">
+<meta name="description" content="I focus on two papers, &#96;A Theory of Regularized Markov Decision Processes&#96; by Matthieu et al. and &#96;Leverage the Average an Analysis of Regularization in RL&#39; by Nino et al. They give some theoretical i">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Regularized RL: Some Theoretical Analysis">
+<meta property="og:url" content="http://aidefender.github.io/2020/05/06/Max-ent-RL-some-theoretical-analysis/index.html">
 <meta property="og:site_name" content="Zhenghai Xue&#39;s HomePage">
-<meta property="og:description" content="2nd Year Undergraduate at School of Artificial Intelligence, Nanjing University">
+<meta property="og:description" content="I focus on two papers, &#96;A Theory of Regularized Markov Decision Processes&#96; by Matthieu et al. and &#96;Leverage the Average an Analysis of Regularization in RL&#39; by Nino et al. They give some theoretical i">
 <meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2020-04-29T16:47:07.000Z">
-<meta property="article:modified_time" content="2020-04-29T16:47:07.745Z">
+<meta property="article:published_time" content="2020-05-06T14:10:02.000Z">
+<meta property="article:modified_time" content="2020-05-06T14:32:42.657Z">
 <meta property="article:author" content="Zhenghai Xue">
+<meta property="article:tag" content="RL Research">
 <meta name="twitter:card" content="summary">
 
 
@@ -119,13 +120,13 @@
 
 
 
-  <link rel="canonical" href="http://aidefender.github.io/Misc/"/>
+  <link rel="canonical" href="http://aidefender.github.io/2020/05/06/Max-ent-RL-some-theoretical-analysis/"/>
 
 
 
 
 
-  <title>Misc | Zhenghai Xue's HomePage</title>
+  <title>Regularized RL: Some Theoretical Analysis | Zhenghai Xue's HomePage</title>
   
 
 
@@ -230,33 +231,147 @@
 
   <div id="posts" class="posts-expand">
     
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://aidefender.github.io/2020/05/06/Max-ent-RL-some-theoretical-analysis/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Zhenghai Xue">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Zhenghai Xue's HomePage">
+    </span>
+
     
-    
-    <div class="post-block page">
       <header class="post-header">
 
-	<h1 class="post-title" itemprop="name headline">Misc</h1>
-
-
-
-</header>
-
-      
-      
-      
-      <div class="post-body">
         
         
+          <h1 class="post-title" itemprop="name headline">Regularized RL: Some Theoretical Analysis</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-05-06T22:10:02+08:00">
+                2020-05-06
+              </time>
+            
+
+            
+
+            
+          </span>
+
           
-        
-      </div>
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+              <div class="post-description">
+                  I focus on two papers, `A Theory of Regularized Markov Decision Processes` by Matthieu et al. and `Leverage the Average an Analysis of Regularization in RL' by Nino et al. They give some theoretical insights into regularization in RL by building new frameworks as well as introducing concepts and methods. The interesting point is that SAC and TRPO can also be viewed as special cases of the framework.
+              </div>
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
       
       
+
+      
+        <h1 id="Notations"><a href="#Notations" class="headerlink" title="Notations"></a>Notations</h1>
       
     </div>
     
     
     
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/RL-Research/" rel="tag"># RL Research</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/04/30/week11/" rel="next" title="Some Thoughts">
+                <i class="fa fa-chevron-left"></i> Some Thoughts
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
   </div>
 
 
@@ -289,8 +404,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -356,6 +480,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Notations"><span class="nav-number">1.</span> <span class="nav-text">Notations</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
