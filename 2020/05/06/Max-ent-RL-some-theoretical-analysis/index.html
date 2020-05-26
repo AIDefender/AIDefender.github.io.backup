@@ -87,7 +87,7 @@
 <meta property="og:description" content="I focus on two papers, &#96;A Theory of Regularized Markov Decision Processes&#96; by Matthieu et al. and &#96;Leverage the Average an Analysis of Regularization in RL&#39; by Nino et al. They give some theoretical i">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2020-05-06T14:10:02.000Z">
-<meta property="article:modified_time" content="2020-05-06T16:18:44.462Z">
+<meta property="article:modified_time" content="2020-05-26T11:17:23.295Z">
 <meta property="article:author" content="Zhenghai Xue">
 <meta property="article:tag" content="RL Research">
 <meta name="twitter:card" content="summary">
@@ -314,25 +314,69 @@
       
 
       
-        <h1 id="Background"><a href="#Background" class="headerlink" title="Background"></a>Background</h1><h2 id="Unregularized-MDP"><a href="#Unregularized-MDP" class="headerlink" title="Unregularized MDP"></a>Unregularized MDP</h2><p>We write $\Delta_X$ the set of probability distributions over a finite set $X$(In fact a probability simplex) and $Y^X$ the set of applications from $X$ to the set $Y$. The Markovian transition kernel can be represented as $P\in \Delta_\mathcal{S}^{\mathcal{S}\times\mathcal{A}}$, and the reward function $r\in\mathbb{R}^{\mathcal{S}\times\mathcal{A}}$. For any function $v\in\mathbb{R}^\mathcal{S}$, we can define the Bellman operator associated with policy $\pi\in \Delta_{\mathcal{A}}^{\mathcal{S}}$ as </p>
+        <p>First I introduce contents from <code>A Theory of Regularized Markov Decision Processes</code> by Matthieu et al. .</p>
+<h1 id="Background"><a href="#Background" class="headerlink" title="Background"></a>Background</h1><h2 id="Unregularized-MDP"><a href="#Unregularized-MDP" class="headerlink" title="Unregularized MDP"></a>Unregularized MDP</h2><p>We write $\Delta_X$ the set of probability distributions over a finite set $X$(In fact a probability simplex) and $Y^X$ the set of applications from $X$ to the set $Y$. The Markovian transition kernel can be represented as $P\in \Delta_\mathcal{S}^{\mathcal{S}\times\mathcal{A}}$, and the reward function $r\in\mathbb{R}^{\mathcal{S}\times\mathcal{A}}$. For any function $v\in\mathbb{R}^\mathcal{S}$, we can define the Bellman operator associated with policy $\pi\in \Delta_{\mathcal{A}}^{\mathcal{S}}$ as </p>
 <script type="math/tex; mode=display">
 \forall s \in \mathcal{S},\left[T_{\pi} v\right](s)=\mathbb{E}_{a \sim \pi(\cdot | s)}\left[r(s, a)+\gamma \mathbb{E}_{s^{\prime} | s, a}\left[v\left(s^{\prime}\right)\right]\right]</script><p>This operator is a $γ$-contraction in supremum norm and its<br>unique fixed-point is the value function $v_π$. With $r_{\pi}(s)=$$\mathbb{E}_{a \sim \pi(\cdot | s)}[r(s, a)]$ and $P_{\pi}\left(s^{\prime} | s\right)=\mathbb{E}_{a \sim \pi(\cdot | s)}\left[P\left(s^{\prime} | s, a\right)\right]$, the operator can be written as $T_{\pi} v=r_{\pi}+\gamma P_{\pi} v$. We further define </p>
 <script type="math/tex; mode=display">
 q(s, a)=r(s, a)+\gamma \mathbb{E}_{s^{\prime} | s, a}\left[v\left(s^{\prime}\right)\right]</script><p>and the Bellman operator can also be written as </p>
 <script type="math/tex; mode=display">
-[T_\pi v](s)= \langle   \pi(\cdot|s), q(s, \cdot)\rangle</script><h2 id="Legendre-Fenchel-transform"><a href="#Legendre-Fenchel-transform" class="headerlink" title="Legendre-Fenchel transform"></a>Legendre-Fenchel transform</h2><p>Let $\Omega: \Delta_{\mathcal{A}} \rightarrow \mathbb{R}$ be a strongly convex function. The Legendre-Fenchel transform (or convex conjugate) of $\Omega$ is $\Omega^{*}: \mathbb{R}^{\mathcal{A}} \rightarrow \mathbb{R},$ defined as</p>
+[T_\pi v](s)= \langle   \pi(\cdot|s), q(s, \cdot)\rangle</script><p>W.r.t. the Bellman optimality operator,  we have for any $v\in \mathbb{R}^\mathcal{S}$,</p>
+<script type="math/tex; mode=display">
+T_*v=\max\limits_\pi T_\pi v</script><p>This operator is also a $γ$-contraction in supremum norm,<br>and its fixed point is the optimal value function $v_*$ .</p>
+<p>The greedy policy w.r.t. function $v$ is defined as </p>
+<script type="math/tex; mode=display">
+\pi^{\prime} \in \mathcal{G}(v) \Leftrightarrow T_{*} v=T_{\pi^{\prime}} v \Leftrightarrow \pi^{\prime} \in \mathrm{arg}\max\limits_\pi T_{\pi} v</script><h2 id="Legendre-Fenchel-transform"><a href="#Legendre-Fenchel-transform" class="headerlink" title="Legendre-Fenchel transform"></a>Legendre-Fenchel transform</h2><p>Let $\Omega: \Delta_{\mathcal{A}} \rightarrow \mathbb{R}$ be a strongly convex function. The Legendre-Fenchel transform (or convex conjugate) of $\Omega$ is $\Omega^{*}: \mathbb{R}^{\mathcal{A}} \rightarrow \mathbb{R},$ defined as</p>
 <script type="math/tex; mode=display">
 \forall q_{s} \in \mathbb{R}^{\mathcal{A}}, \Omega^{*}\left(q_{s}\right)=\max _{\pi_{s} \in \Delta_{\mathcal{A}}}\left\langle\pi_{s}, q_{s}\right\rangle-\Omega\left(\pi_{s}\right)</script><p>$\nabla \Omega<script type="math/tex">^*$ is Lipschitz and $\nabla \Omega</script>^*\left(q_{s}\right)=\operatorname{argmax}_{\pi_{s} \in \Delta_{\mathcal{A}}}\left\langle\pi_{s}, q_{s}\right\rangle-\Omega\left(\pi_{s}\right)$.</p>
-<h1 id="Regularized-MDP"><a href="#Regularized-MDP" class="headerlink" title="Regularized MDP"></a>Regularized MDP</h1><p>Regularized Bellman operator is defined as </p>
+<p>Note: Everyone is focused on the optimality of MDP/value iteration. What about its $\varepsilon$-suboptimality?</p>
+<h2 id="Bregman-divergence-and-Mirror-descent"><a href="#Bregman-divergence-and-Mirror-descent" class="headerlink" title="Bregman divergence and Mirror descent"></a>Bregman divergence and Mirror descent</h2><p>Let $\pi^{\prime}$ be some given policy (typically $\pi_{k},$ when computing $\pi_{k+1}$ ), the Bregman divergence generated by $\Omega$ is</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+\Omega_{\pi_{s}^{\prime}}\left(\pi_{s}\right) &=D_{\Omega}\left(\pi_{s} \| \pi_{s}^{\prime}\right) \\
+&=\Omega\left(\pi_{s}\right)-\Omega\left(\pi_{s}^{\prime}\right)-\left\langle\nabla \Omega\left(\pi_{s}^{\prime}\right), \pi_{s}-\pi_{s}^{\prime}\right\rangle
+\end{aligned}</script><h2 id="Error-Propagation-analysis-in-RL"><a href="#Error-Propagation-analysis-in-RL" class="headerlink" title="Error Propagation analysis in RL"></a>Error Propagation analysis in RL</h2><h1 id="Regularized-MDP"><a href="#Regularized-MDP" class="headerlink" title="Regularized MDP"></a>Regularized MDP</h1><p>Regularized Bellman operator is defined as </p>
 <script type="math/tex; mode=display">
 T_{\pi, \Omega}v=T_{\pi}v-\Omega(\pi)</script><p>It shares the contraction property with unregularized Bellman operator. The regularized value function is simply the unregularized value of $\pi$ for the reward $r_{\pi}-\Omega(\pi),$ that is $v_{\pi, \Omega}=\left(I-\gamma P_{\pi}\right)^{-1}\left(r_{\pi}-\Omega(\pi)\right)$.</p>
-<h1 id="Regularized-Modified-Policy-Iteration"><a href="#Regularized-Modified-Policy-Iteration" class="headerlink" title="Regularized Modified Policy Iteration"></a>Regularized Modified Policy Iteration</h1><p>Having defined the notion of regularized MDPs, we still<br>need algorithms that solve them. Reg-Modified PI is defined as </p>
+<p>The regularized Bellman optimality operator is</p>
+<script type="math/tex; mode=display">
+T_{*, \Omega} v=\max _{\pi \in \Delta_{\mathcal{A}}^{\mathcal{S}}} T_{\pi, \Omega} v=\Omega^{*}(q) \in \mathbb{R}^{S}</script><p>and </p>
+<script type="math/tex; mode=display">
+\pi^{\prime}=\mathcal{G}_{\Omega}(v)=\nabla \Omega^{*}(q) \Leftrightarrow T_{\pi^{\prime}, \Omega} v=T_{*, \Omega} v</script><h1 id="Regularized-Modified-Policy-Iteration"><a href="#Regularized-Modified-Policy-Iteration" class="headerlink" title="Regularized Modified Policy Iteration"></a>Regularized Modified Policy Iteration</h1><p>Having defined the notion of regularized MDPs, we still<br>need algorithms that solve them. Reg-Modified PI is defined as </p>
 <script type="math/tex; mode=display">
 \left\{\begin{array}{l}
 \pi_{k+1}=\mathcal{G}_{\Omega}\left(v_{k}\right) \\
 v_{k+1}=\left(T_{\pi_{k+1}, \Omega}\right)^{m} v_{k}
 \end{array}\right.</script><p>With $m=1$ we get VI: $\pi_{k+1}$ is a greedy step and $v_{k+1}=T_{*, \Omega}v_k$. With $m=\infty$ we obtain PI: $(T_{\pi_k, \Omega})^\infty v_{k-1}=v_{\pi_k, \Omega}$.</p>
-<h2 id="Related-algorithms"><a href="#Related-algorithms" class="headerlink" title="Related algorithms"></a>Related algorithms</h2><h2 id="Analysis"><a href="#Analysis" class="headerlink" title="Analysis"></a>Analysis</h2>
+<h2 id="Related-algorithms"><a href="#Related-algorithms" class="headerlink" title="Related algorithms"></a>Related algorithms</h2><p>When $m=1$,  we get </p>
+<script type="math/tex; mode=display">
+q_{k+1}(s, a)=r(s, a)+\gamma \mathbb{E}_{s^{\prime} | s, a}\left[\Omega^{*}\left(q_{k}\left(s^{\prime}, \cdot\right)\right)\right]</script><p>When $\Omega(\pi_s)=\sum_{a} \pi_s(a)\ln\pi_s(a)$, $\Omega^{*}\left(q_{k}(s, \cdot)\right)=\ln \sum_{a} \exp q_{k}(s, a)$, which is exactly what SQL does. If we further compute the regularized greedy policy from $q_k(s, a)$,  we get </p>
+<script type="math/tex; mode=display">
+\pi_{k+1}(\cdot | s)=\nabla \Omega^{*}\left(q_{k}(s, \cdot)\right)=\frac{\exp q_{k}(s, \cdot)}{\sum\limits_{a} \exp q_{k}(s, a)}</script><p>This is done in SAC.</p>
+<p><font color=#FF0000 size=5> Question </font>: SAC should be maximum-entropy RL algorithms,  but as the writer points out,  this paper focuses on regularized RL. Where is the difference?</p>
+<p><strong>Answer</strong>: The regularization is on the Bellman operators, not the reward. Regularized Bellman operator here is the same as that in SAC:</p>
+<script type="math/tex; mode=display">
+\mathcal{T}^{\pi} Q\left(\mathbf{s}_{t}, \mathbf{a}_{t}\right) \triangleq r\left(\mathbf{s}_{t}, \mathbf{a}_{t}\right)+\gamma \mathbb{E}_{\mathbf{s}_{t+1} \sim p}\left[V\left(\mathbf{s}_{t+1}\right)\right]</script><p>where</p>
+<script type="math/tex; mode=display">
+V\left(\mathbf{s}_{t}\right)=\mathbb{E}_{\mathbf{a}_{t} \sim \pi}\left[Q\left(\mathbf{s}_{t}, \mathbf{a}_{t}\right)-\log \pi\left(\mathbf{a}_{t} | \mathbf{s}_{t}\right)\right]</script><h2 id="Analysis"><a href="#Analysis" class="headerlink" title="Analysis"></a>Analysis</h2><h1 id="Mirror-Descent-Modified-Policy-Iteration"><a href="#Mirror-Descent-Modified-Policy-Iteration" class="headerlink" title="Mirror Descent Modified Policy Iteration"></a>Mirror Descent Modified Policy Iteration</h1><p>We consider a reg-MPI algorithmic scheme with a Bregman divergence replacing the regularizer. For the greedy step, we simply consider $\pi_{k+1}=\mathcal{G}_{\Omega_{\pi_{k}}}\left(v_{k}\right),$ that is</p>
+<script type="math/tex; mode=display">
+\pi_{k+1}=\underset{\pi}{\operatorname{argmax}}\left\langle q_{k}, \pi\right\rangle-D_{\Omega}\left(\pi \| \pi_{k}\right)</script><p>For the partial evaluation step, we can regularize according to the previous policy $\pi_{k}$ that is $v_{k+1}=\left(T_{\pi_{k+1}, \Omega_{\pi_{k}}}\right)^{m} v_{k},$ or according to the current policy $\pi_{k+1},$ that is $v_{k+1}=\left(T_{\pi_{k+1}, \Omega_{\pi_{k+1}}}\right)^{m} v_{k}=\left(T_{\pi_{k+1}}\right)^{m}v_k$.</p>
+<h2 id="Related-Algorithms"><a href="#Related-Algorithms" class="headerlink" title="Related Algorithms"></a>Related Algorithms</h2><p>There are some algorithms new to me previously.</p>
+<h2 id="Analysis-1"><a href="#Analysis-1" class="headerlink" title="Analysis"></a>Analysis</h2><p><br></p>
+<p><br></p>
+<p>Then I introduce contents from <code>Leverage the Average an Analysis of Regularization in RL</code> by Nino et al. .</p>
+<h1 id="Regularized-MPI"><a href="#Regularized-MPI" class="headerlink" title="Regularized MPI"></a>Regularized MPI</h1><p>Now they define the regularized greedy policy as </p>
+<script type="math/tex; mode=display">
+\mathcal{G}_{\mu}^{\lambda, \tau}(q)=\underset{\pi \in \Delta_{4}^{S}}{\operatorname{argmax}}(\langle\pi, q\rangle-\lambda \mathrm{KL}(\pi \| \mu)+\tau \mathcal{H}(\pi))</script><p>which take into account KL divergence and policy entropy at the same time. With regard to policy evaluaton(i.e. compute $q$), there are two type of them: Type 1 is the regularized one:</p>
+<script type="math/tex; mode=display">
+ T_{\pi | \mu}^{1} q=T_{\pi | \mu}^{\lambda, \tau} q=r+\gamma P(\langle\pi, q\rangle-\lambda \mathrm{KL}(\pi \| \mu)+\tau \mathcal{H}(\pi))</script><p>while type 2 ignores the regularization in the evaluation step:</p>
+<script type="math/tex; mode=display">
+T_{\pi | \mu}^{2} q_{k}=T_{\pi} q_{k}.</script><p>These lead to the following MD-MPI$_{1-2} (λ,τ )$ scheme:</p>
+<script type="math/tex; mode=display">
+\left\{\begin{array}{l}
+\pi_{k+1}=\mathcal{G}_{\pi_{k}}^{\lambda, \tau}\left(q_{k}\right) \\
+q_{k+1}=\left(T_{\pi_{k+1} | \pi_{k}}^{1-2}\right)^{m} q_{k}+\epsilon_{k+1}
+\end{array}\right.</script>
       
     </div>
     
@@ -371,6 +415,10 @@ v_{k+1}=\left(T_{\pi_{k+1}, \Omega}\right)^{m} v_{k}
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2020/05/19/Advances-in-2020-5/" rel="prev" title="Advances in 2020-5">
+                Advances in 2020-5 <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -447,7 +495,7 @@ v_{k+1}=\left(T_{\pi_{k+1}, \Omega}\right)^{m} v_{k}
               
                 <a href="/archives/%7C%7C%20archive">
               
-                  <span class="site-state-item-count">6</span>
+                  <span class="site-state-item-count">7</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -508,7 +556,7 @@ v_{k+1}=\left(T_{\pi_{k+1}, \Omega}\right)^{m} v_{k}
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Background"><span class="nav-number">1.</span> <span class="nav-text">Background</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Unregularized-MDP"><span class="nav-number">1.1.</span> <span class="nav-text">Unregularized MDP</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Legendre-Fenchel-transform"><span class="nav-number">1.2.</span> <span class="nav-text">Legendre-Fenchel transform</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Regularized-MDP"><span class="nav-number">2.</span> <span class="nav-text">Regularized MDP</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Regularized-Modified-Policy-Iteration"><span class="nav-number">3.</span> <span class="nav-text">Regularized Modified Policy Iteration</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Related-algorithms"><span class="nav-number">3.1.</span> <span class="nav-text">Related algorithms</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Analysis"><span class="nav-number">3.2.</span> <span class="nav-text">Analysis</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Background"><span class="nav-number">1.</span> <span class="nav-text">Background</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Unregularized-MDP"><span class="nav-number">1.1.</span> <span class="nav-text">Unregularized MDP</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Legendre-Fenchel-transform"><span class="nav-number">1.2.</span> <span class="nav-text">Legendre-Fenchel transform</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Bregman-divergence-and-Mirror-descent"><span class="nav-number">1.3.</span> <span class="nav-text">Bregman divergence and Mirror descent</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Error-Propagation-analysis-in-RL"><span class="nav-number">1.4.</span> <span class="nav-text">Error Propagation analysis in RL</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Regularized-MDP"><span class="nav-number">2.</span> <span class="nav-text">Regularized MDP</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Regularized-Modified-Policy-Iteration"><span class="nav-number">3.</span> <span class="nav-text">Regularized Modified Policy Iteration</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Related-algorithms"><span class="nav-number">3.1.</span> <span class="nav-text">Related algorithms</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Analysis"><span class="nav-number">3.2.</span> <span class="nav-text">Analysis</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Mirror-Descent-Modified-Policy-Iteration"><span class="nav-number">4.</span> <span class="nav-text">Mirror Descent Modified Policy Iteration</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Related-Algorithms"><span class="nav-number">4.1.</span> <span class="nav-text">Related Algorithms</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Analysis-1"><span class="nav-number">4.2.</span> <span class="nav-text">Analysis</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Regularized-MPI"><span class="nav-number">5.</span> <span class="nav-text">Regularized MPI</span></a></li></ol></div>
             
 
           </div>
