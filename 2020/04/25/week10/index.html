@@ -87,7 +87,7 @@
 <meta property="og:description" content="This week I had some discussions with a senior fellow and my director. They pointed out some motivations and keys of improvements. Then I read related papers for further research, listed as follows">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2020-04-25T00:35:46.000Z">
-<meta property="article:modified_time" content="2020-05-06T14:14:21.873Z">
+<meta property="article:modified_time" content="2020-07-12T00:47:48.434Z">
 <meta property="article:author" content="Zhenghai Xue">
 <meta property="article:tag" content="Weekly Essays">
 <meta name="twitter:card" content="summary">
@@ -316,16 +316,26 @@
       
         <center> <font size=6>Essay for Week10: Literature Review</font> </center>
 
-<h1 id="Stable-Policy-Optimization-via-Off-Policy-Divergence-Regularization"><a href="#Stable-Policy-Optimization-via-Off-Policy-Divergence-Regularization" class="headerlink" title="Stable Policy Optimization via Off-Policy Divergence Regularization"></a>Stable Policy Optimization via Off-Policy Divergence Regularization</h1><h2 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation"></a>Motivation</h2><p>The key motivation in this work is that constraining the <strong>probabilities of the immediate future actions</strong> might not be enough to ensure that the surrogate objective is still a valid estimate of the performance of the next policy.  Instead, we should reason about the long-term effect of the policies <strong>on the distribution of the future states</strong>.</p>
-<p>Let $d_\rho^\pi$ be the discounted state visitation distribution:</p>
+<center><font size=5>Stable Policy Optimization via Off-Policy Divergence Regularization</font></center>
+
+<h1 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation"></a>Motivation</h1><p>The key motivation in this work is that constraining the <strong>probabilities of the immediate future actions</strong> might not be enough to ensure that the surrogate objective is still a valid estimate of the performance of the next policy.  Instead, we should reason about the long-term effect of the policies <strong>on the distribution of the future states</strong>.</p>
+<h1 id="Preliminaries"><a href="#Preliminaries" class="headerlink" title="Preliminaries"></a>Preliminaries</h1><p>Let $d_\rho^\pi$ be the discounted <strong>state visitation distribution</strong>:</p>
 <script type="math/tex; mode=display">
-d_{\rho}^{\pi}(s) \triangleq(1-\gamma) \sum_{t=0}^{\infty} \gamma^{t} \operatorname{Pr}^{\pi}\left(s_{t}=s | s_{0} \sim \rho\right)</script><p>We have the following bound:</p>
+d_{\rho}^{\pi}(s) \triangleq(1-\gamma) \sum_{t=0}^{\infty} \gamma^{t} \operatorname{Pr}^{\pi}\left(s_{t}=s | s_{0} \sim \rho\right)</script><p>We can also define <strong>state-action visitation distribution</strong>:</p>
+<script type="math/tex; mode=display">
+\mu_{\rho}^{\pi}(s, a) \triangleq(1-\gamma) \sum_{t=0}^{\infty} \gamma^{t} \operatorname{Pr}^{\pi}\left(s_{t}=s, a_{t}=a \mid s_{0} \sim \rho\right)</script><p>We know that $\mu_{\rho}^{\pi}(s, a)=d_{\rho}^{\pi}(s) \cdot \pi(a \mid s)$, and that </p>
+<script type="math/tex; mode=display">
+\mu_{\rho}^{\pi}\left(s^{\prime}, a^{\prime}\right)=(1-\gamma) \rho\left(s^{\prime}\right) \pi\left(a^{\prime} \mid s^{\prime}\right) +\gamma \int\pi\left(a^{\prime} \mid s^{\prime}\right) \mathbb{P}\left(s^{\prime} \mid s, a\right) \mu_{\rho}^{\pi}(s, a) \mathrm{d} s \mathrm{d} a</script><h1 id="Approximation-of-visitation-divergences"><a href="#Approximation-of-visitation-divergences" class="headerlink" title="Approximation of visitation divergences"></a>Approximation of visitation divergences</h1><p><strong>Note</strong>: see the conjugate gradient of TRPO</p>
+<p>We have the following bound:</p>
 <script type="math/tex; mode=display">
 \begin{aligned}
 J\left(\pi^{\prime}\right) & \geq L_{\pi}\left(\pi^{\prime}\right)-\epsilon^{\pi} D_{\mathrm{TV}}\left(d_{\rho}^{\pi^{\prime}} \| d_{\rho}^{\pi}\right) \\
 & \geq L_{\pi}^{\mathrm{clip}}\left(\pi^{\prime}\right)-\epsilon^{\pi} D_{\mathrm{TV}}\left(d_{\rho}^{\pi^{\prime}} \| d_{\rho}^{\pi}\right)
-\end{aligned}</script><h2 id="Approximation-of-visitation-divergences"><a href="#Approximation-of-visitation-divergences" class="headerlink" title="Approximation of visitation divergences"></a>Approximation of visitation divergences</h2><p><strong>Note</strong>: see the conjugate gradient of TRPO</p>
-
+\end{aligned}</script><p>Justify action probability into state visitation distributions:</p>
+<script type="math/tex; mode=display">
+D_{\mathrm{TV}}\left(d_{\rho}^{\pi^{\prime}} \| d_{\rho}^{\pi}\right) \leq \frac{2 \gamma}{1-\gamma} \mathbb{E}_{s \sim d_{\rho}^{\pi}}\left[D_{\mathrm{TV}}\left(\pi^{\prime}(. \mid s) \| \pi(. \mid s)\right)\right]</script><p>We then have a new bound:</p>
+<script type="math/tex; mode=display">
+J\left(\pi^{\prime}\right) \geq L_{\pi}\left(\pi^{\prime}\right)-\frac{2 \gamma \epsilon^{\pi}}{1-\gamma} \mathbb{E}_{s \sim d_{\rho}^{\pi}}\left[D_{\mathrm{TV}}\left(\pi^{\prime} \left(\cdot \mid s\right) \| \pi(\cdot\mid s)\right)\right]</script>
       
     </div>
     
@@ -505,7 +515,7 @@ J\left(\pi^{\prime}\right) & \geq L_{\pi}\left(\pi^{\prime}\right)-\epsilon^{\pi
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Stable-Policy-Optimization-via-Off-Policy-Divergence-Regularization"><span class="nav-number">1.</span> <span class="nav-text">Stable Policy Optimization via Off-Policy Divergence Regularization</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Motivation"><span class="nav-number">1.1.</span> <span class="nav-text">Motivation</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Approximation-of-visitation-divergences"><span class="nav-number">1.2.</span> <span class="nav-text">Approximation of visitation divergences</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Motivation"><span class="nav-number">1.</span> <span class="nav-text">Motivation</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Preliminaries"><span class="nav-number">2.</span> <span class="nav-text">Preliminaries</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Approximation-of-visitation-divergences"><span class="nav-number">3.</span> <span class="nav-text">Approximation of visitation divergences</span></a></li></ol></div>
             
 
           </div>
