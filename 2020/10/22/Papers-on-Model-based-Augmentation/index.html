@@ -79,20 +79,18 @@
 
 
 
-<meta name="description" content="Yet more details in Max-ent RL">
+<meta name="description" content="I focus on two papers, &#96;A Theory of Regularized Markov Decision Processes&#96; by Matthieu et al. and &#96;Leverage the Average an Analysis of Regularization in RL&#39; by Nino et al. They give some theoretical i">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Advances in 2020-5">
-<meta property="og:url" content="http://aidefender.github.io/2020/05/19/Advances-in-2020-5/index.html">
+<meta property="og:title" content="Papers on Model-Based Augmentation">
+<meta property="og:url" content="http://aidefender.github.io/2020/10/22/Papers-on-Model-based-Augmentation/index.html">
 <meta property="og:site_name" content="Zhenghai Xue&#39;s HomePage">
-<meta property="og:description" content="Yet more details in Max-ent RL">
+<meta property="og:description" content="I focus on two papers, &#96;A Theory of Regularized Markov Decision Processes&#96; by Matthieu et al. and &#96;Leverage the Average an Analysis of Regularization in RL&#39; by Nino et al. They give some theoretical i">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="http://aidefender.github.io/home/xzh/Affairs/self-intro/hexo-homepage/source/_posts/Advances-in-2020-5.assets/image-20200528203000246.png">
-<meta property="article:published_time" content="2020-05-19T14:26:05.000Z">
-<meta property="article:modified_time" content="2020-05-28T16:25:31.620Z">
+<meta property="article:published_time" content="2020-10-22T07:50:25.000Z">
+<meta property="article:modified_time" content="2020-10-22T07:51:33.607Z">
 <meta property="article:author" content="Zhenghai Xue">
 <meta property="article:tag" content="RL Research">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://aidefender.github.io/home/xzh/Affairs/self-intro/hexo-homepage/source/_posts/Advances-in-2020-5.assets/image-20200528203000246.png">
 
 
 
@@ -122,13 +120,13 @@
 
 
 
-  <link rel="canonical" href="http://aidefender.github.io/2020/05/19/Advances-in-2020-5/"/>
+  <link rel="canonical" href="http://aidefender.github.io/2020/10/22/Papers-on-Model-based-Augmentation/"/>
 
 
 
 
 
-  <title>Advances in 2020-5 | Zhenghai Xue's HomePage</title>
+  <title>Papers on Model-Based Augmentation | Zhenghai Xue's HomePage</title>
   
 
 
@@ -245,7 +243,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://aidefender.github.io/2020/05/19/Advances-in-2020-5/">
+    <link itemprop="mainEntityOfPage" href="http://aidefender.github.io/2020/10/22/Papers-on-Model-based-Augmentation/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Zhenghai Xue">
@@ -262,7 +260,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Advances in 2020-5</h1>
+          <h1 class="post-title" itemprop="name headline">Papers on Model-Based Augmentation</h1>
         
 
         <div class="post-meta">
@@ -274,8 +272,8 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-05-19T22:26:05+08:00">
-                2020-05-19
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-10-22T15:50:25+08:00">
+                2020-10-22
               </time>
             
 
@@ -299,7 +297,7 @@
 
           
               <div class="post-description">
-                  Yet more details in Max-ent RL
+                  I focus on two papers, `A Theory of Regularized Markov Decision Processes` by Matthieu et al. and `Leverage the Average an Analysis of Regularization in RL' by Nino et al. They give some theoretical insights into regularization in RL by building new frameworks as well as introducing concepts and methods. The interesting point is that SAC and TRPO can also be viewed as special cases of the framework.
               </div>
           
 
@@ -316,31 +314,7 @@
       
 
       
-        <h1 id="Revisiting-the-Softmax-Bellman-Operator-New-Benefits-and-New-Perspective"><a href="#Revisiting-the-Softmax-Bellman-Operator-New-Benefits-and-New-Perspective" class="headerlink" title="Revisiting the Softmax Bellman Operator: New Benefits and New Perspective"></a>Revisiting the Softmax Bellman Operator: New Benefits and New Perspective</h1><p>They study the theoretical properties of the softmax Bellman Operator. They prove that <strong>the distance of its Q function from the optimal one(hard target) can be bounded</strong>. While softmax Bellman Operator has been shown <strong>not</strong> to converge to the optimal value, it <strong>gets close to the optimal value exponentially</strong>. They also show that the softmax operator can <strong>reduce the overestimation error</strong> and <strong>gradient noise</strong>.</p>
-<p>I think it is necessary to make clear the distinctions between softmax BO, max-ent RL and RL proposed in <code>Reinforcement Learning and Control as Probabilistic Inference: Tutorial and Review</code>.</p>
-<h1 id="Relearning-some-basics-in-RL"><a href="#Relearning-some-basics-in-RL" class="headerlink" title="Relearning some basics in RL"></a>Relearning some basics in RL</h1><h2 id="Policy-improvement-and-proof-in-SQL"><a href="#Policy-improvement-and-proof-in-SQL" class="headerlink" title="Policy improvement and proof in SQL"></a>Policy improvement and proof in SQL</h2><p><strong>Policy improvement theorem</strong> is one of the most fundamental theorems in RL. Let  $\pi$ and $\pi’$ be any pair of deterministic policies such that, for all $￼s\in S$, </p>
-<script type="math/tex; mode=display">
-Q^\pi(s,\pi'(s))\geqslant V^\pi(s).</script><p>Then the policy ￼ $\pi’$ must be as good as, or better than $\pi$. That is, for all states $s\in S$, </p>
-<script type="math/tex; mode=display">
-V^{\pi'}(s)\geqslant V^\pi(s).</script><p>In turn, if we choose the greedy policy according to $Q^\pi(s,a)$, we can get our policy optimized:</p>
-<script type="math/tex; mode=display">
-\begin{aligned}
-\pi^{\prime}(s) &=\arg \max _{a} Q^{\pi}(s, a) \\
-&=\arg \max _{a} E\left\{r_{t+1}+\gamma V^{\pi}\left(s_{t+1}\right) | s_{t}=s, a_{t}=a\right\} \\
-&=\arg \max _{a} \sum_{s^{\prime}} \mathcal{P}_{s s^{\prime}}^{a}\left[\mathcal{R}_{s s^{\prime}}^{a}+\gamma V^{\pi}\left(s^{\prime}\right)\right]
-\end{aligned}</script><p>In <strong>SQL</strong>(Soft Q Learning), we have a similar <strong>Theorem 4</strong>:</p>
-<p><img src="/home/xzh/Affairs/self-intro/hexo-homepage/source/_posts/Advances-in-2020-5.assets/image-20200528203000246.png" alt="image-20200528203000246"></p>
-<p>Here the greedy policy $\tilde{\pi}$ is chosen according to the <strong>soft</strong>max of Q value. This explains why we need to minimize the KL-divergence between current policy to a Boltzman policy in SAC.</p>
-<p>The proof of <strong>Theorem 4</strong> is also enlightening. It relies on the following observation: if one greedily maximize the sum of entropy and value with one-step look-ahead, then one obtains $\tilde{\pi}$ from $\pi:$</p>
-<script type="math/tex; mode=display">
-\mathcal{H}(\pi(\cdot | \mathbf{s}))+\mathbb{E}_{\mathbf{a} \sim \pi}\left[Q_{\mathrm{soft}}^{\pi}(\mathbf{s}, \mathbf{a})\right] \leq \mathcal{H}(\tilde{\pi}(\cdot | \mathbf{s}))+\mathbb{E}_{\mathbf{a} \sim \tilde{\pi}}\left[Q_{\mathrm{soft}}^{\pi}(\mathbf{s}, \mathbf{a})\right]</script><p>The proof is straight-forward by noticing that</p>
-<script type="math/tex; mode=display">
-\mathcal{H}(\pi(\cdot | \mathbf{s}))+\mathbb{E}_{\mathbf{a} \sim \pi}\left[Q_{\text {soft }}^{\pi}(\mathbf{s}, \mathbf{a})\right]=-\mathrm{D}_{\mathrm{KL}}(\pi(\cdot | \mathbf{s}) \| \tilde{\pi}(\cdot | \mathbf{s}))+\log \int \exp \left(Q_{\text {soft }}^{\pi}(\mathbf{s}, \mathbf{a})\right) d \mathbf{a}
-\label{a}</script><p>Equation $(\ref{a})$ has a special meaning. It means when I minimize the KL Divergence between $\pi$ and $\tilde{\pi}$, I am acutally maximizing the Objective of max-ent RL: </p>
-<script type="math/tex; mode=display">
-\mathcal{H}(\pi(\cdot | \mathbf{s}))+\mathbb{E}_{\mathbf{a} \sim \pi}\left[Q_{\text {soft }}^{\pi}(\mathbf{s}, \mathbf{a})\right]</script><p><strong>Note</strong>: NO Bellman equation is used in the proof.</p>
-<p>Here the question is: can we prove the same(or similar) bound for other types of soft evaluation?</p>
-
+        
       
     </div>
     
@@ -430,17 +404,8 @@ V^{\pi'}(s)\geqslant V^\pi(s).</script><p>In turn, if we choose the greedy polic
       
 
       
-        <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
-            Table of Contents
-          </li>
-          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
-            Overview
-          </li>
-        </ul>
-      
 
-      <section class="site-overview-wrap sidebar-panel">
+      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -506,22 +471,6 @@ V^{\pi'}(s)\geqslant V^\pi(s).</script><p>In turn, if we choose the greedy polic
         </div>
       </section>
 
-      
-      <!--noindex-->
-        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
-          <div class="post-toc">
-
-            
-              
-            
-
-            
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Revisiting-the-Softmax-Bellman-Operator-New-Benefits-and-New-Perspective"><span class="nav-number">1.</span> <span class="nav-text">Revisiting the Softmax Bellman Operator: New Benefits and New Perspective</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Relearning-some-basics-in-RL"><span class="nav-number">2.</span> <span class="nav-text">Relearning some basics in RL</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Policy-improvement-and-proof-in-SQL"><span class="nav-number">2.1.</span> <span class="nav-text">Policy improvement and proof in SQL</span></a></li></ol></li></ol></div>
-            
-
-          </div>
-        </section>
-      <!--/noindex-->
       
 
       

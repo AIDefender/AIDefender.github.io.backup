@@ -87,7 +87,7 @@
 <meta property="og:description" content="This week I had some discussions with a senior fellow and my director. They pointed out some motivations and keys of improvements. Then I read related papers for further research, listed as follows">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2020-04-25T00:35:46.000Z">
-<meta property="article:modified_time" content="2020-07-12T00:47:48.434Z">
+<meta property="article:modified_time" content="2020-07-12T12:25:44.478Z">
 <meta property="article:author" content="Zhenghai Xue">
 <meta property="article:tag" content="Weekly Essays">
 <meta name="twitter:card" content="summary">
@@ -321,21 +321,33 @@
 <h1 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation"></a>Motivation</h1><p>The key motivation in this work is that constraining the <strong>probabilities of the immediate future actions</strong> might not be enough to ensure that the surrogate objective is still a valid estimate of the performance of the next policy.  Instead, we should reason about the long-term effect of the policies <strong>on the distribution of the future states</strong>.</p>
 <h1 id="Preliminaries"><a href="#Preliminaries" class="headerlink" title="Preliminaries"></a>Preliminaries</h1><p>Let $d_\rho^\pi$ be the discounted <strong>state visitation distribution</strong>:</p>
 <script type="math/tex; mode=display">
-d_{\rho}^{\pi}(s) \triangleq(1-\gamma) \sum_{t=0}^{\infty} \gamma^{t} \operatorname{Pr}^{\pi}\left(s_{t}=s | s_{0} \sim \rho\right)</script><p>We can also define <strong>state-action visitation distribution</strong>:</p>
+d_{\rho}^{\pi}(s) \triangleq(1-\gamma) \sum_{t=0}^{\infty} \gamma^{t} \operatorname{Pr}^{\pi}\left(s_{t}=s | s_{0} \sim \rho\right)</script><font color=0x8080>感觉可以把SAC中的那个Q learning的式子写成 $\mathbb{E}_{s\sim d^\pi_\rho, a\sim ...}...$的形式</font>
+
+<p>We can also define <strong>state-action visitation distribution</strong>:</p>
 <script type="math/tex; mode=display">
 \mu_{\rho}^{\pi}(s, a) \triangleq(1-\gamma) \sum_{t=0}^{\infty} \gamma^{t} \operatorname{Pr}^{\pi}\left(s_{t}=s, a_{t}=a \mid s_{0} \sim \rho\right)</script><p>We know that $\mu_{\rho}^{\pi}(s, a)=d_{\rho}^{\pi}(s) \cdot \pi(a \mid s)$, and that </p>
 <script type="math/tex; mode=display">
-\mu_{\rho}^{\pi}\left(s^{\prime}, a^{\prime}\right)=(1-\gamma) \rho\left(s^{\prime}\right) \pi\left(a^{\prime} \mid s^{\prime}\right) +\gamma \int\pi\left(a^{\prime} \mid s^{\prime}\right) \mathbb{P}\left(s^{\prime} \mid s, a\right) \mu_{\rho}^{\pi}(s, a) \mathrm{d} s \mathrm{d} a</script><h1 id="Approximation-of-visitation-divergences"><a href="#Approximation-of-visitation-divergences" class="headerlink" title="Approximation of visitation divergences"></a>Approximation of visitation divergences</h1><p><strong>Note</strong>: see the conjugate gradient of TRPO</p>
+\mu_{\rho}^{\pi}\left(s^{\prime}, a^{\prime}\right)=(1-\gamma) \rho\left(s^{\prime}\right) \pi\left(a^{\prime} \mid s^{\prime}\right) +\gamma \int\pi\left(a^{\prime} \mid s^{\prime}\right) \mathbb{P}\left(s^{\prime} \mid s, a\right) \mu_{\rho}^{\pi}(s, a) \mathrm{d} s \mathrm{d} a</script><p>This paper also makes use of $\phi$-divergences:</p>
+<script type="math/tex; mode=display">
+D_{\phi}\left(\mu_{\rho}^{\pi^{\prime}} \| \mu_{\rho}^{\pi}\right)=\mathbb{E}_{(s, a) \sim \mu_{\rho}^{\pi^{\prime}}}\left[\phi\left(\frac{\mu_{\rho}^{\pi}(s, a)}{\mu_{\rho}^{\pi^{\prime}}(s, a)}\right)\right]</script><p>where $\phi:[0, \infty) \rightarrow \mathbb{R}$ is a convex, lower-semicontinuous function and $\phi(1)=0 .$ We can obtain some common divergences by choosing $\phi$, such as KL divergence $(\phi(t)=t \log (t)),$ total variation distance $(\phi(t)=|t-1|), \chi^{2}$ -divergence $\left(\phi(t)=(t-1)^{2}\right),$ etc.</p>
+<h1 id="Approximation-of-visitation-divergences"><a href="#Approximation-of-visitation-divergences" class="headerlink" title="Approximation of visitation divergences"></a>Approximation of visitation divergences</h1><p><strong>Note</strong>: see the conjugate gradient of TRPO</p>
 <p>We have the following bound:</p>
 <script type="math/tex; mode=display">
-\begin{aligned}
+\begin{align*}
 J\left(\pi^{\prime}\right) & \geq L_{\pi}\left(\pi^{\prime}\right)-\epsilon^{\pi} D_{\mathrm{TV}}\left(d_{\rho}^{\pi^{\prime}} \| d_{\rho}^{\pi}\right) \\
 & \geq L_{\pi}^{\mathrm{clip}}\left(\pi^{\prime}\right)-\epsilon^{\pi} D_{\mathrm{TV}}\left(d_{\rho}^{\pi^{\prime}} \| d_{\rho}^{\pi}\right)
-\end{aligned}</script><p>Justify action probability into state visitation distributions:</p>
+\end{align*}</script><p>Justify action probability into state visitation distributions:</p>
 <script type="math/tex; mode=display">
 D_{\mathrm{TV}}\left(d_{\rho}^{\pi^{\prime}} \| d_{\rho}^{\pi}\right) \leq \frac{2 \gamma}{1-\gamma} \mathbb{E}_{s \sim d_{\rho}^{\pi}}\left[D_{\mathrm{TV}}\left(\pi^{\prime}(. \mid s) \| \pi(. \mid s)\right)\right]</script><p>We then have a new bound:</p>
 <script type="math/tex; mode=display">
-J\left(\pi^{\prime}\right) \geq L_{\pi}\left(\pi^{\prime}\right)-\frac{2 \gamma \epsilon^{\pi}}{1-\gamma} \mathbb{E}_{s \sim d_{\rho}^{\pi}}\left[D_{\mathrm{TV}}\left(\pi^{\prime} \left(\cdot \mid s\right) \| \pi(\cdot\mid s)\right)\right]</script>
+J\left(\pi^{\prime}\right) \geq L_{\pi}\left(\pi^{\prime}\right)-\frac{2 \gamma \epsilon^{\pi}}{1-\gamma} \mathbb{E}_{s \sim d_{\rho}^{\pi}}\left[D_{\mathrm{TV}}\left(\pi^{\prime} \left(\cdot \mid s\right) \| \pi(\cdot\mid s)\right)\right]</script><h1 id="OFF-POLICY-FORMULATION-OF-DIVERGENCES"><a href="#OFF-POLICY-FORMULATION-OF-DIVERGENCES" class="headerlink" title="OFF-POLICY FORMULATION OF DIVERGENCES"></a>OFF-POLICY FORMULATION OF DIVERGENCES</h1><p>They aim to estimate $\mathrm{D}_{\mathrm{TV}}\left(d_{\rho}^{\pi^{\prime}} | d_{\rho}^{\pi}\right)$ without requiring on-policy data from $\pi^{\prime}$. They turn to the alternative variational representation of φ-divergences:</p>
+<script type="math/tex; mode=display">
+\label{phi-diverge}
+D_{\phi}\left(\mu_{\rho}^{\pi^{\prime}} \| \mu_{\rho}^{\pi}\right)= \sup _{f: \mathcal{S} \times \mathcal{A} \rightarrow \mathbb{R}}\left[\mathbb{E}_{(s, a) \sim \mu_{\rho}^{\pi^{\prime}}}[f(s, a)]-\mathbb{E}_{(s, a) \sim \mu_{\rho}^{\pi}}\left[\phi^{\star} \circ f(s, a)\right]\right]</script><p>And furthur use  a change of variable trick to avoid sampling from $\mu_\rho^{\pi’}$: </p>
+<script type="math/tex; mode=display">
+g(s, a)=f(s, a)+\gamma \mathbb{P}^{\pi^{\prime}} g(s, a)</script><p>Equation ($\ref{phi-diverge}$) can then be written as </p>
+<script type="math/tex; mode=display">
+D_{\phi}\left(\mu_{\rho}^{\pi^{\prime}} \| \mu_{\rho}^{\pi}\right)=\sup _{g: \mathcal{S} \times \mathcal{A} \rightarrow \mathbb{R}}\left[(1-\gamma) \mathbb{E}_{s \sim \rho, a \sim \pi^{\prime}}[g(s, a)]-\mathbb{E}_{(s, a) \sim \mu_{\rho}^{\pi}}\left[\phi^{\star}\left(\left(g-\gamma \mathbb{P}^{\pi^{\prime}} g\right)(s, a)\right)\right]\right]</script>
       
     </div>
     
@@ -515,7 +527,7 @@ J\left(\pi^{\prime}\right) \geq L_{\pi}\left(\pi^{\prime}\right)-\frac{2 \gamma 
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Motivation"><span class="nav-number">1.</span> <span class="nav-text">Motivation</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Preliminaries"><span class="nav-number">2.</span> <span class="nav-text">Preliminaries</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Approximation-of-visitation-divergences"><span class="nav-number">3.</span> <span class="nav-text">Approximation of visitation divergences</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Motivation"><span class="nav-number">1.</span> <span class="nav-text">Motivation</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Preliminaries"><span class="nav-number">2.</span> <span class="nav-text">Preliminaries</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Approximation-of-visitation-divergences"><span class="nav-number">3.</span> <span class="nav-text">Approximation of visitation divergences</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#OFF-POLICY-FORMULATION-OF-DIVERGENCES"><span class="nav-number">4.</span> <span class="nav-text">OFF-POLICY FORMULATION OF DIVERGENCES</span></a></li></ol></div>
             
 
           </div>
