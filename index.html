@@ -241,6 +241,138 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://aidefender.github.io/2021/01/31/Thoughts-on-Recent-Researches/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Zhenghai Xue">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Zhenghai Xue's HomePage">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2021/01/31/Thoughts-on-Recent-Researches/" itemprop="url">Thoughts-on-Recent-Researches</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2021-01-31T10:42:29+08:00">
+                2021-01-31
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <hr>
+<p>title:Thoughts on Recent Researches<br>date:2021-01-31 10:42:29<br>tags:RL Research<br>author:Zhenghai Xue<br>mathjax:true</p>
+<h2 id="description-A-high-level-summary-of-recent-experiements-and-thoughts-on-papers-I-read-Covered-topics-are-ensp-1-preferred-policy-distributions-in-common-RL-algorithms-2-issues-with-policy-distribution-ensp-distribution-mismatch-lack-of-corrective-feedback-and-pessimism-in-face-of-uncertainty-3-TODO-Update-to-Data-UTD-Ratio-in-RL-Algorithms-4-TODO-Dyna-style-model-based-learning-that-is-use-dynamic-model-to-generate-fake-transitions-augmenting-tht-model-free-replay-buffer"><a href="#description-A-high-level-summary-of-recent-experiements-and-thoughts-on-papers-I-read-Covered-topics-are-ensp-1-preferred-policy-distributions-in-common-RL-algorithms-2-issues-with-policy-distribution-ensp-distribution-mismatch-lack-of-corrective-feedback-and-pessimism-in-face-of-uncertainty-3-TODO-Update-to-Data-UTD-Ratio-in-RL-Algorithms-4-TODO-Dyna-style-model-based-learning-that-is-use-dynamic-model-to-generate-fake-transitions-augmenting-tht-model-free-replay-buffer" class="headerlink" title="description:A high-level summary of recent experiements and thoughts on papers I read. Covered topics are:&ensp;1. preferred policy distributions in common RL algorithms; 2. issues with policy distribution:&ensp;distribution mismatch, lack of corrective feedback and pessimism in face of uncertainty. 3. (TODO) Update-to-Data(UTD) Ratio in RL Algorithms; 4. (TODO) Dyna-style model-based learning, that is, use dynamic model to generate fake transitions, augmenting tht model-free replay buffer."></a>description:A high-level summary of recent experiements and thoughts on papers I read. Covered topics are:&ensp;1. preferred policy distributions in common RL algorithms; 2. issues with policy distribution:&ensp;distribution mismatch, lack of corrective feedback and pessimism in face of uncertainty. 3. (TODO) Update-to-Data(UTD) Ratio in RL Algorithms; 4. (TODO) Dyna-style model-based learning, that is, use dynamic model to generate fake transitions, augmenting tht model-free replay buffer.</h2><h1 id="Policy-Distribution"><a href="#Policy-Distribution" class="headerlink" title="Policy Distribution"></a>Policy Distribution</h1><h2 id="Basics"><a href="#Basics" class="headerlink" title="Basics"></a>Basics</h2><p>Standardized Reinforcement Learning(RL) algorithms can be categorized into two classes: on-policy learning and off-policy learning. Their difference lies in the relationship between behavior policy $\mu$, with which the agent interacts with the environment, and the target policy $\pi$, which the RL algorithm aims to evaluate or improve.  In the on-policy setting,  the behavior policy and target policy are exactly the same, while in the off-policy setting the behavior policy can be any possible policy distribution.</p>
+<h2 id="Preferred-policy-distribution-of-common-algorithms"><a href="#Preferred-policy-distribution-of-common-algorithms" class="headerlink" title="Preferred policy distribution of common algorithms"></a>Preferred policy distribution of common algorithms</h2><p>It is well known that the Q-learning update </p>
+<script type="math/tex; mode=display">
+\label{eq1}
+Q_{t+1}(s,a) = Q_t(s,a) + \alpha \left(r(s,a) + \gamma \max\limits_{a'}\mathbb{E}_{s'\sim p(s'|s,a)}[Q_t(s',a')]-Q_t(s,a)\right)</script><p>is off-policy because the max operator is irrelevant to the policy distribution. In contrast, the Q-value evaluation task is on-policy since the evaluation is with regard to the performance of a certain policy.  Its update rule is similar to the on-policy counterpart of Q-learning, SARSA:</p>
+<script type="math/tex; mode=display">
+Q_{t+1}(s,a) = Q_t(s,a) + \alpha \left(r(s,a) + \gamma ~\mathbb{E}_{a'\sim\pi(s')}\mathbb{E}_{s'\sim p(s'|s,a)}[Q_t(s',a')]-Q_t(s,a)\right)</script><p>Another frequently used technique in RL is  Policy Gradient(PG), where the max-return objective is achieved by directly taking the derivative w.r.t. the policy parameters.  PG methods are naturally on-policy, and even though some of its variants, like PPO and TRPO, utilize important sampling which is commonly used in off-policy evaluation, these algorithms can not work well in a complete off-policy setting.</p>
+<h2 id="Issues-with-policy-distribution-of-common-algorithms"><a href="#Issues-with-policy-distribution-of-common-algorithms" class="headerlink" title="Issues with policy distribution of common algorithms"></a>Issues with policy distribution of common algorithms</h2><h3 id="Distribution-mismatch"><a href="#Distribution-mismatch" class="headerlink" title="Distribution mismatch"></a>Distribution mismatch</h3><p>The critic learning of Soft Actor Critic(SAC) is basically Q-value evaluation: the action of the next step in Bellman equation is chosen according to the <strong>current</strong> policy. In the implementation of SAC, the actions used in the Bellman equation in Q evaluation is indeed sampled from the current policy distribution, while the states are simply sampled from the replay buffer, which contains trajectories of <strong>mixed</strong> policies. This gives rise to a mismatch in state distribution. <a href="#1">[1]</a> corrects this by computing important ratio based on the replay buffer. The ratio emphasizes samples which are more likely to appear under the stationary state distribution of the current policy. The ratio is attained by solving an optimization problem, and the overall algorithm is basically a min-max optimization.</p>
+<h3 id="Lack-of-corrective-feedback"><a href="#Lack-of-corrective-feedback" class="headerlink" title="Lack of corrective feedback"></a>Lack of corrective feedback</h3><p>Equation $(\ref{eq1})$ is about the <strong>exact</strong> computation of Q function. In modern deep Q-learning, where the Q function is approximated by a neural network, we must take the estimation error into consideration.</p>
+<h3 id="Pessimism-in-face-of-uncertainty"><a href="#Pessimism-in-face-of-uncertainty" class="headerlink" title="Pessimism in face of uncertainty"></a>Pessimism in face of uncertainty</h3><h1 id="Update-to-Data-UTD-Ratio-in-RL-Algorithms"><a href="#Update-to-Data-UTD-Ratio-in-RL-Algorithms" class="headerlink" title="Update-to-Data(UTD) Ratio in RL Algorithms"></a>Update-to-Data(UTD) Ratio in RL Algorithms</h1><h1 id="Dyna-style-Model-based-Learning"><a href="#Dyna-style-Model-based-Learning" class="headerlink" title="Dyna-style Model-based Learning"></a>Dyna-style Model-based Learning</h1><p>This blog is based on results from my experiments and following research papers:</p>
+<p><span id="1">[1]</span> Sinha, Samarth, et al. “Experience Replay with Likelihood-free Importance Weights.” <em>arXiv preprint arXiv:2006.13169</em> (2020).</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://aidefender.github.io/2020/10/22/Papers-on-Model-based-Augmentation/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1307,7 +1439,7 @@ Z_{t}^{(1)} \doteq \rho_{t} M_{t}^{(1)} q_{\pi}\left(S_{t}, A_{t}\right) \nabla 
               
                 <a href="/archives/%7C%7C%20archive">
               
-                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-count">9</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
