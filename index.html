@@ -260,7 +260,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2021/01/31/Thoughts-on-Recent-Researches/" itemprop="url">Thoughts-on-Recent-Researches</a></h1>
+                <a class="post-title-link" href="/2021/01/31/Thoughts-on-Recent-Researches/" itemprop="url">Thoughts on Recent Researches</a></h1>
         
 
         <div class="post-meta">
@@ -311,141 +311,14 @@
 
       
         
-          
-            <hr>
-<p>title:Thoughts on Recent Researches<br>date:2021-01-31 10:42:29<br>tags:RL Research<br>author:Zhenghai Xue<br>mathjax:true</p>
-<h2 id="description-A-high-level-summary-of-recent-experiements-and-thoughts-on-papers-I-read-Covered-topics-are-ensp-1-preferred-policy-distributions-in-common-RL-algorithms-2-issues-with-policy-distribution-ensp-distribution-mismatch-lack-of-corrective-feedback-and-pessimism-in-face-of-uncertainty-3-TODO-Update-to-Data-UTD-Ratio-in-RL-Algorithms-4-TODO-Dyna-style-model-based-learning-that-is-use-dynamic-model-to-generate-fake-transitions-augmenting-tht-model-free-replay-buffer"><a href="#description-A-high-level-summary-of-recent-experiements-and-thoughts-on-papers-I-read-Covered-topics-are-ensp-1-preferred-policy-distributions-in-common-RL-algorithms-2-issues-with-policy-distribution-ensp-distribution-mismatch-lack-of-corrective-feedback-and-pessimism-in-face-of-uncertainty-3-TODO-Update-to-Data-UTD-Ratio-in-RL-Algorithms-4-TODO-Dyna-style-model-based-learning-that-is-use-dynamic-model-to-generate-fake-transitions-augmenting-tht-model-free-replay-buffer" class="headerlink" title="description:A high-level summary of recent experiements and thoughts on papers I read. Covered topics are:&ensp;1. preferred policy distributions in common RL algorithms; 2. issues with policy distribution:&ensp;distribution mismatch, lack of corrective feedback and pessimism in face of uncertainty. 3. (TODO) Update-to-Data(UTD) Ratio in RL Algorithms; 4. (TODO) Dyna-style model-based learning, that is, use dynamic model to generate fake transitions, augmenting tht model-free replay buffer."></a>description:A high-level summary of recent experiements and thoughts on papers I read. Covered topics are:&ensp;1. preferred policy distributions in common RL algorithms; 2. issues with policy distribution:&ensp;distribution mismatch, lack of corrective feedback and pessimism in face of uncertainty. 3. (TODO) Update-to-Data(UTD) Ratio in RL Algorithms; 4. (TODO) Dyna-style model-based learning, that is, use dynamic model to generate fake transitions, augmenting tht model-free replay buffer.</h2><h1 id="Policy-Distribution"><a href="#Policy-Distribution" class="headerlink" title="Policy Distribution"></a>Policy Distribution</h1><h2 id="Basics"><a href="#Basics" class="headerlink" title="Basics"></a>Basics</h2><p>Standardized Reinforcement Learning(RL) algorithms can be categorized into two classes: on-policy learning and off-policy learning. Their difference lies in the relationship between behavior policy $\mu$, with which the agent interacts with the environment, and the target policy $\pi$, which the RL algorithm aims to evaluate or improve.  In the on-policy setting,  the behavior policy and target policy are exactly the same, while in the off-policy setting the behavior policy can be any possible policy distribution.</p>
-<h2 id="Preferred-policy-distribution-of-common-algorithms"><a href="#Preferred-policy-distribution-of-common-algorithms" class="headerlink" title="Preferred policy distribution of common algorithms"></a>Preferred policy distribution of common algorithms</h2><p>It is well known that the Q-learning update </p>
-<script type="math/tex; mode=display">
-\label{eq1}
-Q_{t+1}(s,a) = Q_t(s,a) + \alpha \left(r(s,a) + \gamma \max\limits_{a'}\mathbb{E}_{s'\sim p(s'|s,a)}[Q_t(s',a')]-Q_t(s,a)\right)</script><p>is off-policy because the max operator is irrelevant to the policy distribution. In contrast, the Q-value evaluation task is on-policy since the evaluation is with regard to the performance of a certain policy.  Its update rule is similar to the on-policy counterpart of Q-learning, SARSA:</p>
-<script type="math/tex; mode=display">
-Q_{t+1}(s,a) = Q_t(s,a) + \alpha \left(r(s,a) + \gamma ~\mathbb{E}_{a'\sim\pi(s')}\mathbb{E}_{s'\sim p(s'|s,a)}[Q_t(s',a')]-Q_t(s,a)\right)</script><p>Another frequently used technique in RL is  Policy Gradient(PG), where the max-return objective is achieved by directly taking the derivative w.r.t. the policy parameters.  PG methods are naturally on-policy, and even though some of its variants, like PPO and TRPO, utilize important sampling which is commonly used in off-policy evaluation, these algorithms can not work well in a complete off-policy setting.</p>
-<h2 id="Issues-with-policy-distribution-of-common-algorithms"><a href="#Issues-with-policy-distribution-of-common-algorithms" class="headerlink" title="Issues with policy distribution of common algorithms"></a>Issues with policy distribution of common algorithms</h2><h3 id="Distribution-mismatch"><a href="#Distribution-mismatch" class="headerlink" title="Distribution mismatch"></a>Distribution mismatch</h3><p>The critic learning of Soft Actor Critic(SAC) is basically Q-value evaluation: the action of the next step in Bellman equation is chosen according to the <strong>current</strong> policy. In the implementation of SAC, the actions used in the Bellman equation in Q evaluation is indeed sampled from the current policy distribution, while the states are simply sampled from the replay buffer, which contains trajectories of <strong>mixed</strong> policies. This gives rise to a mismatch in state distribution. <a href="#1">[1]</a> corrects this by computing important ratio based on the replay buffer. The ratio emphasizes samples which are more likely to appear under the stationary state distribution of the current policy. The ratio is attained by solving an optimization problem, and the overall algorithm is basically a min-max optimization.</p>
-<h3 id="Lack-of-corrective-feedback"><a href="#Lack-of-corrective-feedback" class="headerlink" title="Lack of corrective feedback"></a>Lack of corrective feedback</h3><p>Equation $(\ref{eq1})$ is about the <strong>exact</strong> computation of Q function. In modern deep Q-learning, where the Q function is approximated by a neural network, we must take the estimation error into consideration.</p>
-<h3 id="Pessimism-in-face-of-uncertainty"><a href="#Pessimism-in-face-of-uncertainty" class="headerlink" title="Pessimism in face of uncertainty"></a>Pessimism in face of uncertainty</h3><h1 id="Update-to-Data-UTD-Ratio-in-RL-Algorithms"><a href="#Update-to-Data-UTD-Ratio-in-RL-Algorithms" class="headerlink" title="Update-to-Data(UTD) Ratio in RL Algorithms"></a>Update-to-Data(UTD) Ratio in RL Algorithms</h1><h1 id="Dyna-style-Model-based-Learning"><a href="#Dyna-style-Model-based-Learning" class="headerlink" title="Dyna-style Model-based Learning"></a>Dyna-style Model-based Learning</h1><p>This blog is based on results from my experiments and following research papers:</p>
-<p><span id="1">[1]</span> Sinha, Samarth, et al. “Experience Replay with Likelihood-free Importance Weights.” <em>arXiv preprint arXiv:2006.13169</em> (2020).</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://aidefender.github.io/2020/10/22/Papers-on-Model-based-Augmentation/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Zhenghai Xue">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Zhenghai Xue's HomePage">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2020/10/22/Papers-on-Model-based-Augmentation/" itemprop="url">Papers on Model-Based Augmentation</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-10-22T15:50:25+08:00">
-                2020-10-22
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            
-          
+          A high-level summary of recent experiements and thoughts on papers I read. Covered topics are:&ensp;1. preferred policy distributions in common RL algorithms; 2. issues with policy distribution:&ensp;distribution mismatch, lack of corrective feedback and pessimism in face of uncertainty. 3. (TODO) Update-to-Data(UTD) Ratio in RL Algorithms; 4. (TODO) Dyna-style model-based learning, that is, use dynamic model to generate fake transitions, augmenting the model-free replay buffer.
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2021/01/31/Thoughts-on-Recent-Researches/">
+              Read more &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -562,7 +435,7 @@ Q_{t+1}(s,a) = Q_t(s,a) + \alpha \left(r(s,a) + \gamma ~\mathbb{E}_{a'\sim\pi(s'
 
       
         
-          Yet more details in Max-ent RL
+          1. Some thoughts on softmax Bellman operator; 2. Revisiting policy improvement theorem in soft Q learning.
           <!--noindex-->
           <div class="post-button text-center">
             <a class="btn" href="/2020/05/19/Advances-in-2020-5/">
@@ -1178,61 +1051,14 @@ Q_{t+1}(s,a) = Q_t(s,a) + \alpha \left(r(s,a) + \gamma ~\mathbb{E}_{a'\sim\pi(s'
 
       
         
-          
-            <center> <font size=6>Essay for Week4: Literature Review</font> </center>
-
-<h1 id="Equivalence-Between-PG-and-SQL"><a href="#Equivalence-Between-PG-and-SQL" class="headerlink" title="Equivalence Between PG and SQL"></a>Equivalence Between PG and SQL</h1><p>It is shown that there is a precise equivalence between Q-learning and policy gradient methods in the setting of entropy-regularized reinforcement learning. To be accurate, the gradient of the loss function used in n-step Q-learning is equal to the gradient of the loss used in an n-step policy gradient method, including a squared-error term on the value function.</p>
-<h1 id="Off-policy-Actor-Critic-Methods"><a href="#Off-policy-Actor-Critic-Methods" class="headerlink" title="Off-policy Actor-Critic Methods"></a>Off-policy Actor-Critic Methods</h1><p>The notations are slightly different from traditional RL literature. For example, $v_\pi$ for value functions and $\mathbf{P}_\pi[s,s’]$ as transition matrix. In convention, the target policy is $\pi$ and behavior policy is $\mu$.</p>
-<h2 id="Prediction-Tasks-Learning-the-Critic"><a href="#Prediction-Tasks-Learning-the-Critic" class="headerlink" title="Prediction Tasks: Learning the Critic"></a>Prediction Tasks: Learning the Critic</h2><p>The on-policy <strong>Goal</strong> is to learn $V$ such that </p>
-<script type="math/tex; mode=display">
-\sum_{s} d_\pi(s) \mathbb{E}_{\pi}\left[\delta\left(S, A, S^{\prime}\right) | S=s\right]=0</script><p>where $\delta\left(S, A, S^{\prime}\right)=R\left(S, A, S^{\prime}\right)+\gamma V\left(S^{\prime}\right)-V(S)$. </p>
-<p>In off-policy linear TD, the update $∆_t$ is weighted by $ρ_t$. <strong>Gradient TD methods</strong> compute the gradient of the projected Bellman error directly. <strong>Emphatic TD</strong> was proposed since GTD are usually  <em>two-time-scale</em>, involving two sets of parameters and two learning rates, which makes it hard to use in practice.</p>
-<p><strong>ETD</strong> introduces an <em>interest function</em> $i: \mathcal{S} \rightarrow[0, \infty)$ and $M_t=i(S_t)+\gamma_t\rho_{t-1}M_{t-1}$, which is  accumulated interests. The update $\Delta_{t}$ is weighted by $\rho_{t} M_{t} .$ In practice, we usually set $i\equiv1$.</p>
-<p><strong>Consistent Off-Policy TD</strong> weight $\Delta_t$ via $\rho_t\bar{c}(S_t)$, where $\bar{c}(s) \doteq \frac{d_{\pi}(s)}{d_{\mu}(s)}$ is the density ratio. To learn $\bar{c}$ via stochastic approximation, the <em>COP operator</em> was proposed. Even further, $\hat{\gamma}$-discounted COP operator was proposed.</p>
-<p>The following are detailed introductions of some articles.</p>
-<p>Idea for research: </p>
-<ol>
-<li>能否整合Q learning和TD learning,用TD learning的一套表示出sql</li>
-<li>我认为这个投影方法是可以和A2C在一个level的，换句话说是在A2C这么高的level上的改进:方法改进了Critic(即Q函数)在actor更新过程中的地位</li>
-</ol>
-<p><font size=4><strong>Emphatic TD Learning</strong></font>&emsp; TD learning: make online adaptations to the prediction based on <em>one(or several)</em> steps, rather than <em>the whole trajectory</em>. Using <strong>IS</strong> to reweight the updates of TD in off-policy setting has <strong>very high variance</strong>. Emphatic weighting is <em>similar</em> to IS in that it also varies emphasis so as to reweight the distribution of linear TD($λ$) updates, but to a <em>different</em> <em>goal</em>. The new goal is to create a weighting equivalent to the <strong>followon</strong> distribution for the target policy started in the stationary distribution of the behavior policy.</p>
-<ul>
-<li>stability of on-policy TD(0): many matrix-form annotations; related to positive definite matrix and contraction.</li>
-<li>instability of off-policy TD(0): distribution mismatch and the $\theta\to2\theta$ problem.</li>
-</ul>
-<p><font size=4><strong>Details of Off-policy TD</strong></font>&emsp; The <strong>excursion objective</strong> is </p>
-<script type="math/tex; mode=display">
-\sum_{s} d_\mu(s) \mathbb{E}_{\pi}\left[\delta\left(S, A, S^{\prime}\right) | S=s\right]=0</script><p>Basic assumption in off-TD is that $\mu(a|s)&gt;0$ for every $s,a$ for which $\pi(a|s)&gt;0$, since it would be <em>impossible</em> to estimate the values under $\pi$ if the actions that $\pi$ would take <strong>were never taken by $\mu$</strong> and their consequences were never observed. This is called <em>the assumption of coverage</em>. </p>
-<p>The deep reason for the difficulty of off-policy learning is that the behavior policy may take the process to a <strong>distribution of states different</strong> from that which would be encountered under the target policy, yet the states might appear to be the same or similar because of <strong>function approximation</strong>.</p>
-<p><font size=4><strong>Stability of Emphatic TD(0)</strong></font>&emsp; For comparison, naive off-policy TD update with importance sampling weight $\rho_t$ can be written as </p>
-<script type="math/tex; mode=display">
-\boldsymbol{\theta}_{t+1}\doteq\boldsymbol{\theta}_{t}+\rho_{t} \alpha\left(R_{t+1}+\gamma \boldsymbol{\theta}_{t}^{\top} \boldsymbol{\phi}_{t+1}-\boldsymbol{\theta}_{t}^{\top} \boldsymbol{\phi}_{t}\right) \boldsymbol{\phi}_{t}</script><p>where $\boldsymbol{\phi}_t$ are features of the state $t$. The emphatic algorithm introduces the followon trace $F_t$, with $F_0=1$ and </p>
-<script type="math/tex; mode=display">
-F_{t} \doteq \gamma \rho_{t-1} F_{t-1}+1, \quad \forall t>0\qquad(1)</script><p>Then the update of <em>emphatic TD(0)</em> is </p>
-<script type="math/tex; mode=display">
-\boldsymbol{\theta}_{t+1} \doteq \boldsymbol{\theta}_{t}+\alpha F_{t} \rho_{t}\left(R_{t+1}+\gamma \boldsymbol{\theta}_{t}^{\top} \boldsymbol{\phi}_{t+1}-\boldsymbol{\theta}_{t}^{\top} \boldsymbol{\phi}_{t}\right) \boldsymbol{\phi}_{t}</script><p>In the process of stability reasoning, a diagonal matrix $\mathbf{F}$ is defined with diagonal elements $f(s) \doteq d_{\mu}(s) \lim _{t \rightarrow \infty} \mathbb{E}_{\mu}\left[F_{t} | S_{t}=s\right]$. In general, $\mathbf{f}$ is the expected number of time steps that would be spent in each state during an excursion starting from the behavior distribution $\mathbf{d}μ$, or formally </p>
-<script type="math/tex; mode=display">
-\mathbf{f}=\mathbf{d}_{\mu}+\gamma \mathbf{P}_{\pi}^{\top} \mathbf{d}_{\mu}+\left(\gamma \mathbf{P}_{\pi}^{\top}\right)^{2} \mathbf{d}_{\mu}+\cdots</script><p>We regard $(1)$ as its approximation.</p>
-<h2 id="Control-Tasks-Learning-the-Actor"><a href="#Control-Tasks-Learning-the-Actor" class="headerlink" title="Control Tasks: Learning the Actor"></a>Control Tasks: Learning the Actor</h2><p>The off-policy <strong>excursion objective</strong> is defined as</p>
-<script type="math/tex; mode=display">
-    J_{\mu} \doteq \sum_{s} d_{\mu}(s) i(s) v_{\pi}(s)</script><p><strong>Off-Policy Policy Gradient</strong> methods write the gradient of $J_\mu$ as </p>
-<script type="math/tex; mode=display">
-    \nabla J_{\mu}=\sum_{s} d_{\mu}(s) i(s) \sum_{a}\left(q_{\pi}(s, a) \nabla \pi(a | s)+\pi(a | s) \nabla q_{\pi}(s, a)\right)</script><p>and ignore the term $\pi(s,a)\nabla q_\pi(s,a)$.</p>
-<p>Others proposed an unbiased estimator $Z_t$ of the gradient.</p>
-<script type="math/tex; mode=display">
-    \begin{array}{l}
-F_{t}^{(1)} \doteq i\left(S_{t}\right)+\gamma_{t} \rho_{t-1} F_{t-1}^{(1)}, \quad M_{t}^{(1)} \doteq\left(1-\lambda_{1}\right) i\left(S_{t}\right)+\lambda_{1} F_{t}^{(1)} \\
-Z_{t}^{(1)} \doteq \rho_{t} M_{t}^{(1)} q_{\pi}\left(S_{t}, A_{t}\right) \nabla \log \pi\left(A_{t} | S_{t}\right)
-\end{array}</script><p>and the <strong>ACE</strong> algorithm updates $\theta \text { as } \theta_{t+1}=\theta_{t}+\alpha Z_{t}^{(1)}$. The following are detailed introductions of some articles.</p>
-<p><font size=4><strong>Off-PAC with Emphatic Weights</strong></font>&emsp; </p>
-<p>This article gives an approach to compute the gradient of $J_\mu(\mathbf{\theta})$.<br><strong>Theorem</strong>(Off-policy Policy Gradient Theorem):<br>&emsp;&emsp;</p>
-<script type="math/tex; mode=display">
-    \frac{\partial J_{\mu}(\boldsymbol{\theta})}{\partial \boldsymbol{\theta}}=\sum_{s} m(s) \sum_{a} \frac{\partial \pi(s, a ; \boldsymbol{\theta})}{\partial \boldsymbol{\theta}} q_{\pi}(s, a)</script><p>where $m:S\to[0,\infty)$ is the emphatic weighting, defined as</p>
-<script type="math/tex; mode=display">
-    \mathbf{m}^{\top} \stackrel{\text { def }}{=} \mathbf{i}^{\top}\left(\mathbf{I}-\mathbf{P}_{\pi, \gamma}\right)^{-1}</script><p>where the vector $\mathbf{i} \in \mathbb{R}^{|S|}$ has entries $\mathbf{i}(s) \stackrel{\text { def }}{=} d_{\mu}(s) i(s)$ and $\mathbf{P}_{\pi, \gamma} \in \mathbb{R}^{|s|\times|s|}$ is the matrix with entries $\mathbf{P}_{\pi, \gamma}\left(s, s^{\prime}\right) \stackrel{\text { det }}{=} \sum_{a} \pi(s, a ; \boldsymbol{\theta}) \mathrm{P}\left(s, a, s^{\prime}\right) \gamma\left(s, a, s^{\prime}\right)$.</p>
-<p>The proof of the theorem involves a matrix representation and a fixed-point style equation.</p>
-<h1 id="On-and-off-policy-Combination"><a href="#On-and-off-policy-Combination" class="headerlink" title="On- and off-policy Combination"></a>On- and off-policy Combination</h1>
-          
+          Summary of recent paper reading, which is largely about off policy learning. Emphatic weights is employed to learn the critic with off policy data, and off-policy policy gradient is applied to learn the actor.
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2020/03/16/week4/">
+              Read more &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -1349,17 +1175,14 @@ Z_{t}^{(1)} \doteq \rho_{t} M_{t}^{(1)} q_{\pi}\left(S_{t}, A_{t}\right) \nabla 
 
       
         
-          
-            <p>This is the very first blog I write, excluding those paper summaries. The first week of 2020Spring semester marks the dawn of directed, purposed scientific research, yet posing worrying and agitating challenges. Also, a mixture of ‘watery’ and hard, core curriculums calls for careful balancing.</p>
-<h1 id="Research"><a href="#Research" class="headerlink" title="Research"></a>Research</h1><p>The Director pointed out some counter-factual elements in SAC, one of the SOTA algoritms in model-free control. Then I did some research on it. While the derivation is not totally natural, currently no idea for improvement comes forth. Here are some related topics.</p>
-<h2 id="Probabilistic-Inference"><a href="#Probabilistic-Inference" class="headerlink" title="Probabilistic Inference"></a>Probabilistic Inference</h2><p>TBH, I think SAC completely depends on this work.</p>
-<h2 id="Maximum-Entropy-RL"><a href="#Maximum-Entropy-RL" class="headerlink" title="Maximum Entropy RL"></a>Maximum Entropy RL</h2><p>The optimal policy for Maximum-Entropy RL is<br><img src="https://cdn.mathpix.com/snip/images/5v9MnBY3tIYgnUXbhjcMvAU5l_GldBnPXV6gbSAAiRI.original.fullsize.png" alt=""></p>
-<p>The policy aims to maximize the entropy of the entire trajectory distribution for policy $\pi$.</p>
-<p>Benefits of maximum-entropy RL include improved exploration in multimodal problems and better pretraining for adaptation.</p>
-<h1 id="Courses"><a href="#Courses" class="headerlink" title="Courses"></a>Courses</h1><h2 id="OS"><a href="#OS" class="headerlink" title="OS"></a>OS</h2><p>主要是写完了libco,对create(),join(),start(),wait()等函数的功能有了新的认识,为学并发打下基础.</p>
-<h2 id="实变泛函"><a href="#实变泛函" class="headerlink" title="实变泛函"></a>实变泛函</h2><p>主要是一些集合的基本操作.比较难理解的是epsilon-delta语言的集合表示和集合列的上下极限.</p>
-
-          
+          This is the very first blog I write, excluding those paper summaries. The first week of 2020Spring semester marks the dawn of directed, purposed scientific research, yet posing worrying and agitating challenges. Also, a mixture of 'watery' and hard, core curriculums calls for careful balancing.
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2020/02/23/week1/">
+              Read more &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -1439,7 +1262,7 @@ Z_{t}^{(1)} \doteq \rho_{t} M_{t}^{(1)} q_{\pi}\left(S_{t}, A_{t}\right) \nabla 
               
                 <a href="/archives/%7C%7C%20archive">
               
-                  <span class="site-state-item-count">9</span>
+                  <span class="site-state-item-count">8</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>

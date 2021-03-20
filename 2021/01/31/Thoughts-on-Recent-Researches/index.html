@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="RL Research," />
 
 
 
@@ -79,16 +79,17 @@
 
 
 
-<meta name="description" content="title:Thoughts on Recent Researchesdate:2021-01-31 10:42:29tags:RL Researchauthor:Zhenghai Xuemathjax:true description:A high-level summary of recent experiements and thoughts on papers I read. Cover">
+<meta name="description" content="A high-level summary of recent experiements and thoughts on papers I read. Covered topics are:&amp;ensp;1. preferred policy distributions in common RL algorithms; 2. issues with policy distribution:&amp;ensp;">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Thoughts-on-Recent-Researches">
+<meta property="og:title" content="Thoughts on Recent Researches">
 <meta property="og:url" content="http://aidefender.github.io/2021/01/31/Thoughts-on-Recent-Researches/index.html">
 <meta property="og:site_name" content="Zhenghai Xue&#39;s HomePage">
-<meta property="og:description" content="title:Thoughts on Recent Researchesdate:2021-01-31 10:42:29tags:RL Researchauthor:Zhenghai Xuemathjax:true description:A high-level summary of recent experiements and thoughts on papers I read. Cover">
+<meta property="og:description" content="A high-level summary of recent experiements and thoughts on papers I read. Covered topics are:&amp;ensp;1. preferred policy distributions in common RL algorithms; 2. issues with policy distribution:&amp;ensp;">
 <meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2021-01-31T02:42:29.757Z">
-<meta property="article:modified_time" content="2021-02-24T03:31:13.157Z">
+<meta property="article:published_time" content="2021-01-31T02:42:29.000Z">
+<meta property="article:modified_time" content="2021-02-24T03:32:21.385Z">
 <meta property="article:author" content="Zhenghai Xue">
+<meta property="article:tag" content="RL Research">
 <meta name="twitter:card" content="summary">
 
 
@@ -125,7 +126,7 @@
 
 
 
-  <title>Thoughts-on-Recent-Researches | Zhenghai Xue's HomePage</title>
+  <title>Thoughts on Recent Researches | Zhenghai Xue's HomePage</title>
   
 
 
@@ -259,7 +260,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Thoughts-on-Recent-Researches</h1>
+          <h1 class="post-title" itemprop="name headline">Thoughts on Recent Researches</h1>
         
 
         <div class="post-meta">
@@ -295,6 +296,10 @@
           
 
           
+              <div class="post-description">
+                  A high-level summary of recent experiements and thoughts on papers I read. Covered topics are:&ensp;1. preferred policy distributions in common RL algorithms; 2. issues with policy distribution:&ensp;distribution mismatch, lack of corrective feedback and pessimism in face of uncertainty. 3. (TODO) Update-to-Data(UTD) Ratio in RL Algorithms; 4. (TODO) Dyna-style model-based learning, that is, use dynamic model to generate fake transitions, augmenting the model-free replay buffer.
+              </div>
+          
 
         </div>
       </header>
@@ -309,9 +314,7 @@
       
 
       
-        <hr>
-<p>title:Thoughts on Recent Researches<br>date:2021-01-31 10:42:29<br>tags:RL Research<br>author:Zhenghai Xue<br>mathjax:true</p>
-<h2 id="description-A-high-level-summary-of-recent-experiements-and-thoughts-on-papers-I-read-Covered-topics-are-ensp-1-preferred-policy-distributions-in-common-RL-algorithms-2-issues-with-policy-distribution-ensp-distribution-mismatch-lack-of-corrective-feedback-and-pessimism-in-face-of-uncertainty-3-TODO-Update-to-Data-UTD-Ratio-in-RL-Algorithms-4-TODO-Dyna-style-model-based-learning-that-is-use-dynamic-model-to-generate-fake-transitions-augmenting-tht-model-free-replay-buffer"><a href="#description-A-high-level-summary-of-recent-experiements-and-thoughts-on-papers-I-read-Covered-topics-are-ensp-1-preferred-policy-distributions-in-common-RL-algorithms-2-issues-with-policy-distribution-ensp-distribution-mismatch-lack-of-corrective-feedback-and-pessimism-in-face-of-uncertainty-3-TODO-Update-to-Data-UTD-Ratio-in-RL-Algorithms-4-TODO-Dyna-style-model-based-learning-that-is-use-dynamic-model-to-generate-fake-transitions-augmenting-tht-model-free-replay-buffer" class="headerlink" title="description:A high-level summary of recent experiements and thoughts on papers I read. Covered topics are:&ensp;1. preferred policy distributions in common RL algorithms; 2. issues with policy distribution:&ensp;distribution mismatch, lack of corrective feedback and pessimism in face of uncertainty. 3. (TODO) Update-to-Data(UTD) Ratio in RL Algorithms; 4. (TODO) Dyna-style model-based learning, that is, use dynamic model to generate fake transitions, augmenting tht model-free replay buffer."></a>description:A high-level summary of recent experiements and thoughts on papers I read. Covered topics are:&ensp;1. preferred policy distributions in common RL algorithms; 2. issues with policy distribution:&ensp;distribution mismatch, lack of corrective feedback and pessimism in face of uncertainty. 3. (TODO) Update-to-Data(UTD) Ratio in RL Algorithms; 4. (TODO) Dyna-style model-based learning, that is, use dynamic model to generate fake transitions, augmenting tht model-free replay buffer.</h2><h1 id="Policy-Distribution"><a href="#Policy-Distribution" class="headerlink" title="Policy Distribution"></a>Policy Distribution</h1><h2 id="Basics"><a href="#Basics" class="headerlink" title="Basics"></a>Basics</h2><p>Standardized Reinforcement Learning(RL) algorithms can be categorized into two classes: on-policy learning and off-policy learning. Their difference lies in the relationship between behavior policy $\mu$, with which the agent interacts with the environment, and the target policy $\pi$, which the RL algorithm aims to evaluate or improve.  In the on-policy setting,  the behavior policy and target policy are exactly the same, while in the off-policy setting the behavior policy can be any possible policy distribution.</p>
+        <h1 id="Policy-Distribution"><a href="#Policy-Distribution" class="headerlink" title="Policy Distribution"></a>Policy Distribution</h1><h2 id="Basics"><a href="#Basics" class="headerlink" title="Basics"></a>Basics</h2><p>Standardized Reinforcement Learning(RL) algorithms can be categorized into two classes: on-policy learning and off-policy learning. Their difference lies in the relationship between behavior policy $\mu$, with which the agent interacts with the environment, and the target policy $\pi$, which the RL algorithm aims to evaluate or improve.  In the on-policy setting,  the behavior policy and target policy are exactly the same, while in the off-policy setting the behavior policy can be any possible policy distribution.</p>
 <h2 id="Preferred-policy-distribution-of-common-algorithms"><a href="#Preferred-policy-distribution-of-common-algorithms" class="headerlink" title="Preferred policy distribution of common algorithms"></a>Preferred policy distribution of common algorithms</h2><p>It is well known that the Q-learning update </p>
 <script type="math/tex; mode=display">
 \label{eq1}
@@ -337,6 +340,12 @@ Q_{t+1}(s,a) = Q_t(s,a) + \alpha \left(r(s,a) + \gamma ~\mathbb{E}_{a'\sim\pi(s'
 
     <footer class="post-footer">
       
+        <div class="post-tags">
+          
+            <a href="/tags/RL-Research/" rel="tag"># RL Research</a>
+          
+        </div>
+      
 
       
       
@@ -346,8 +355,8 @@ Q_{t+1}(s,a) = Q_t(s,a) + \alpha \left(r(s,a) + \gamma ~\mathbb{E}_{a'\sim\pi(s'
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2020/10/22/Papers-on-Model-based-Augmentation/" rel="next" title="Papers on Model-Based Augmentation">
-                <i class="fa fa-chevron-left"></i> Papers on Model-Based Augmentation
+              <a href="/2020/05/19/Advances-in-2020-5/" rel="next" title="Advances in 2020-5">
+                <i class="fa fa-chevron-left"></i> Advances in 2020-5
               </a>
             
           </div>
@@ -431,7 +440,7 @@ Q_{t+1}(s,a) = Q_t(s,a) + \alpha \left(r(s,a) + \gamma ~\mathbb{E}_{a'\sim\pi(s'
               
                 <a href="/archives/%7C%7C%20archive">
               
-                  <span class="site-state-item-count">9</span>
+                  <span class="site-state-item-count">8</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -492,7 +501,7 @@ Q_{t+1}(s,a) = Q_t(s,a) + \alpha \left(r(s,a) + \gamma ~\mathbb{E}_{a'\sim\pi(s'
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#description-A-high-level-summary-of-recent-experiements-and-thoughts-on-papers-I-read-Covered-topics-are-ensp-1-preferred-policy-distributions-in-common-RL-algorithms-2-issues-with-policy-distribution-ensp-distribution-mismatch-lack-of-corrective-feedback-and-pessimism-in-face-of-uncertainty-3-TODO-Update-to-Data-UTD-Ratio-in-RL-Algorithms-4-TODO-Dyna-style-model-based-learning-that-is-use-dynamic-model-to-generate-fake-transitions-augmenting-tht-model-free-replay-buffer"><span class="nav-number">1.</span> <span class="nav-text">description:A high-level summary of recent experiements and thoughts on papers I read. Covered topics are:&amp;ensp;1. preferred policy distributions in common RL algorithms; 2. issues with policy distribution:&amp;ensp;distribution mismatch, lack of corrective feedback and pessimism in face of uncertainty. 3. (TODO) Update-to-Data(UTD) Ratio in RL Algorithms; 4. (TODO) Dyna-style model-based learning, that is, use dynamic model to generate fake transitions, augmenting tht model-free replay buffer.</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Policy-Distribution"><span class="nav-number"></span> <span class="nav-text">Policy Distribution</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Basics"><span class="nav-number">1.</span> <span class="nav-text">Basics</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Preferred-policy-distribution-of-common-algorithms"><span class="nav-number">2.</span> <span class="nav-text">Preferred policy distribution of common algorithms</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Issues-with-policy-distribution-of-common-algorithms"><span class="nav-number">3.</span> <span class="nav-text">Issues with policy distribution of common algorithms</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Distribution-mismatch"><span class="nav-number">3.1.</span> <span class="nav-text">Distribution mismatch</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Lack-of-corrective-feedback"><span class="nav-number">3.2.</span> <span class="nav-text">Lack of corrective feedback</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Pessimism-in-face-of-uncertainty"><span class="nav-number">3.3.</span> <span class="nav-text">Pessimism in face of uncertainty</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Update-to-Data-UTD-Ratio-in-RL-Algorithms"><span class="nav-number"></span> <span class="nav-text">Update-to-Data(UTD) Ratio in RL Algorithms</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Dyna-style-Model-based-Learning"><span class="nav-number"></span> <span class="nav-text">Dyna-style Model-based Learning</span></a></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Policy-Distribution"><span class="nav-number">1.</span> <span class="nav-text">Policy Distribution</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Basics"><span class="nav-number">1.1.</span> <span class="nav-text">Basics</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Preferred-policy-distribution-of-common-algorithms"><span class="nav-number">1.2.</span> <span class="nav-text">Preferred policy distribution of common algorithms</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Issues-with-policy-distribution-of-common-algorithms"><span class="nav-number">1.3.</span> <span class="nav-text">Issues with policy distribution of common algorithms</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Distribution-mismatch"><span class="nav-number">1.3.1.</span> <span class="nav-text">Distribution mismatch</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Lack-of-corrective-feedback"><span class="nav-number">1.3.2.</span> <span class="nav-text">Lack of corrective feedback</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Pessimism-in-face-of-uncertainty"><span class="nav-number">1.3.3.</span> <span class="nav-text">Pessimism in face of uncertainty</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Update-to-Data-UTD-Ratio-in-RL-Algorithms"><span class="nav-number">2.</span> <span class="nav-text">Update-to-Data(UTD) Ratio in RL Algorithms</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Dyna-style-Model-based-Learning"><span class="nav-number">3.</span> <span class="nav-text">Dyna-style Model-based Learning</span></a></li></ol></div>
             
 
           </div>
